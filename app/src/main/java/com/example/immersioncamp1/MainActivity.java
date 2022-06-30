@@ -2,31 +2,23 @@ package com.example.immersioncamp1;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.Settings;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -37,7 +29,6 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -62,53 +53,6 @@ public class MainActivity extends AppCompatActivity {
 
         // calling a method to request permissions.
         requestPermissions();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // in this on create options menu we are calling
-        // a menu inflater and inflating our menu file.
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.search_menu, menu);
-        // on below line we are getting our menu item as search view item
-        MenuItem searchViewItem = menu.findItem(R.id.app_bar_search);
-        // on below line we are creating a variable for our search view.
-        final SearchView searchView = (SearchView) searchViewItem.getActionView();
-        // on below line we are setting on query text listener for our search view.
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                // on query submit we are clearing the focus for our search view.
-                searchView.clearFocus();
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                // on changing the text in our search view we are calling
-                // a filter method to filter our array list
-                filter(newText.toLowerCase());
-                return false;
-            }
-        });
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    private void filter(String text) {
-        // in this method we are filtering our array list.
-        // on below line we are creating a new filtered list.
-        ArrayList<ContactsModal> filteredlist = new ArrayList<>();
-        // on below line we are running a loop for checking if the item is present in array list.
-        for (ContactsModal item : contactsModalArrayList) {
-            if (item.getUserName().toLowerCase().contains(text.toLowerCase())) {
-                filteredlist.add(item);
-            }
-        }
-        if (filteredlist.isEmpty()) {
-            Toast.makeText(this, "No Contact Found", Toast.LENGTH_SHORT).show();
-        } else {
-            contactRVAdapter.filterList(filteredlist);
-        }
     }
 
     private void prepareContactRV() {
