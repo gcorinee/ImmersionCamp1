@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
         // on below line we are initializing our variables.
         contactsModalArrayList = new ArrayList<>();
         contactRV = findViewById(R.id.idRVContacts);
-        FloatingActionButton addNewContactFAB = findViewById(R.id.idFABadd);
         loadingPB = findViewById(R.id.idPBLoading);
 
         // calling method to prepare our recycler view.
@@ -63,13 +62,6 @@ public class MainActivity extends AppCompatActivity {
 
         // calling a method to request permissions.
         requestPermissions();
-
-        // adding on click listener for our fab.
-        addNewContactFAB.setOnClickListener(v -> {
-            // opening a new activity on below line.
-            Intent i = new Intent(MainActivity.this, CreateNewContactActivity.class);
-            startActivity(i);
-        });
     }
 
     @Override

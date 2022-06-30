@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/idRLContact"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="3dp">
+    android:layout_height="60dp"
+    android:layout_margin="5dp">
 
     <ImageView
         android:id="@+id/idIVContact"

@@ -19,9 +19,6 @@
             android:name=".ContactDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".CreateNewContactActivity"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
