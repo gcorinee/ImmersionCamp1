@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ImmersionCamp1</string>
+    <string name="contact_name">Contact Name</string>
+    <string name="search">Search</string>
 </resources>
