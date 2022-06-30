@@ -1,9 +1,5 @@
 <resources>
     <string name="app_name">ImmersionCamp1</string>
-
-    <string name="folderName">Folder Name</string>
-    <string name="appName">Simple Image Gallery</string>
-    <string name="empty">No Images on this device</string>
-
-    <string name="photos_name">Photos</string>
+    <string name="contact_name">Contact Name</string>
+    <string name="search">Search</string>
 </resources>
