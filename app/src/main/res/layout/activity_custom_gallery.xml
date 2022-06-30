@@ -18,19 +18,19 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/head"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="66dp"
             app:cardBackgroundColor="@color/black">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|start"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="20dp"
                 android:text="@string/photos_name"
                 android:textColor="@color/white"
                 android:textSize="35sp"
-                android:textStyle="bold"
-                android:layout_marginLeft="20dp"
-                android:layout_marginStart="10dp" />
+                android:textStyle="bold" />
 
 
             <ImageButton

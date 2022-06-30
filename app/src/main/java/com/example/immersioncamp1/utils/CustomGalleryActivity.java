@@ -48,7 +48,7 @@ public class CustomGalleryActivity extends AppCompatActivity implements ItemClic
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_custom_gallery);
+        setContentView(R.layout.activity_custom_gallery);
 
         if (ContextCompat.checkSelfPermission(CustomGalleryActivity.this,
                 Manifest.permission.READ_EXTERNAL_STORAGE)
