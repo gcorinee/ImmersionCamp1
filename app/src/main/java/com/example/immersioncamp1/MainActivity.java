@@ -173,6 +173,9 @@ public class MainActivity extends AppCompatActivity {
                         contactId = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts._ID));
                         displayName = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME));
                         // on below line we are calling a content solver and making a query
+                        String phoneNumber = "";
+                        String organization = "";
+                        String email = "";
                         Cursor phoneCursor = getContentResolver().query(
                                 ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                                 null,
@@ -182,9 +185,9 @@ public class MainActivity extends AppCompatActivity {
                         // on below line we are moving our cursor to next position.
                         if (phoneCursor.moveToNext()) {
                             // on below line we are getting the phone number for our users and then adding the name along with phone number in array list.
-                            String phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                            contactsModalArrayList.add(new ContactsModal(displayName, phoneNumber));
+                            phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER));
                         }
+                        contactsModalArrayList.add(new ContactsModal(displayName, phoneNumber, organization, email));
                         // on below line we are closing our phone cursor.
                         phoneCursor.close();
                 }

@@ -53,6 +53,7 @@ public class ContactRVAdapter extends RecyclerView.Adapter<ContactRVAdapter.View
         ContactsModal modal = contactsModalArrayList.get(position);
         // on below line we are setting data to our text view.
         holder.contactTV.setText(modal.getUserName());
+        holder.contactDetailTV.setText(modal.getOrganization());
         ColorGenerator generator = ColorGenerator.MATERIAL;
         // generate random color
         int color = generator.getRandomColor();
@@ -70,7 +71,7 @@ public class ContactRVAdapter extends RecyclerView.Adapter<ContactRVAdapter.View
             // on below line we are opening a new activity and passing data to it.
             Intent i = new Intent(context, ContactDetailActivity.class);
             i.putExtra("name", modal.getUserName());
-            i.putExtra("contact", modal.getContactNumber());
+            i.putExtra("contact", modal.getPhoneNumber());
             // on below line we are starting a new activity.
             context.startActivity(i);
         });
@@ -86,12 +87,14 @@ public class ContactRVAdapter extends RecyclerView.Adapter<ContactRVAdapter.View
         // for our image view and text view.
         private ImageView contactIV;
         private TextView contactTV;
+        private TextView contactDetailTV;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             // initializing our image view and text view.
             contactIV = itemView.findViewById(R.id.idIVContact);
-            contactTV = itemView.findViewById(R.id.idTVContactName);
+            contactTV = itemView.findViewById(R.id.idTVName);
+            contactDetailTV = itemView.findViewById(R.id.idTVOrganization);
         }
     }
 }
