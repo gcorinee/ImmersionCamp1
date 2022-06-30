@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -202,11 +203,11 @@ public class MainActivity extends AppCompatActivity {
             // if the count if greater than 0 then we are running a loop to move our cursor to next.
             while (cursor.moveToNext()) {
                 // on below line we are getting the phone number.
+                    contactId = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts._ID));
                     int hasPhoneNumber = cursor.getColumnIndexOrThrow(ContactsContract.Contacts.HAS_PHONE_NUMBER);
                     if (hasPhoneNumber > 0) {
                         // we are checking if the hasPhoneNumber is > 0
                         // on below line we are getting our contact id and user name for that contact
-                        contactId = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts._ID));
                         displayName = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME));
                         // on below line we are calling a content solver and making a query
                         String phoneNumber = "";
@@ -227,9 +228,20 @@ public class MainActivity extends AppCompatActivity {
                         String rawContactId = getRawContactId(contactId);
                         organization = getCompanyName(rawContactId);
 
+
+                        Cursor emailCursor = getContentResolver().query(
+                                ContactsContract.CommonDataKinds.Email.CONTENT_URI, null,
+                                ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?",
+                                new String[]{contactId}, null);
+                        while (emailCursor.moveToNext()) {
+                            //to get the contact names
+                            email = emailCursor.getString(emailCursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Email.DATA));
+                        }
+
                         contactsModalArrayList.add(new ContactsModal(displayName, phoneNumber, organization, email));
                         // on below line we are closing our phone cursor.
                         phoneCursor.close();
+                        emailCursor.close();
                 }
             }
         }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,8 +16,8 @@ import androidx.core.app.ActivityCompat;
 public class ContactDetailActivity extends AppCompatActivity {
 
     // creating variables for our image view and text view and string. .
-    private String contactName, contactNumber;
-    private TextView contactTV, nameTV;
+    private String name, phoneNumber, organization, email;
+    private TextView phoneTV, nameTV, organizationTV, emailTV;
     private ImageView contactIV, callIV, messageIV;
 
     @Override
@@ -26,15 +27,21 @@ public class ContactDetailActivity extends AppCompatActivity {
 
         // on below line we are getting data which 
         // we passed in our adapter class with intent.
-        contactName = getIntent().getStringExtra("name");
-        contactNumber = getIntent().getStringExtra("contact");
+        name = getIntent().getStringExtra("name");
+        phoneNumber = getIntent().getStringExtra("phoneNumber");
+        organization = getIntent().getStringExtra("organization");
+        email = getIntent().getStringExtra("email");
 
         // initializing our views.
         nameTV = findViewById(R.id.idTVName);
         contactIV = findViewById(R.id.idIVContact);
-        contactTV = findViewById(R.id.idTVPhone);
-        nameTV.setText(contactName);
-        contactTV.setText(contactNumber);
+        phoneTV = findViewById(R.id.idTVPhone);
+        organizationTV = findViewById(R.id.idTVOrganization);
+        emailTV = findViewById(R.id.idTVEmail);
+        nameTV.setText(name);
+        phoneTV.setText(phoneNumber);
+        organizationTV.setText(organization);
+        emailTV.setText(email);
         callIV = findViewById(R.id.idIVCall);
         messageIV = findViewById(R.id.idIVMessage);
 
@@ -43,7 +50,7 @@ public class ContactDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // calling a method to make a call.
-                makeCall(contactNumber);
+                makeCall(phoneNumber);
             }
         });
 
@@ -52,25 +59,25 @@ public class ContactDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // calling a method to send message
-                sendMessage(contactNumber);
+                sendMessage(phoneNumber);
             }
         });
     }
 
-    private void sendMessage(String contactNumber) {
+    private void sendMessage(String phoneNumber) {
         // in this method we are calling an intent to send sms.
         // on below line we are passing our contact number.
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("sms:" + contactNumber));
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("sms:" + phoneNumber));
         intent.putExtra("sms_body", "Enter your messaage");
         startActivity(intent);
     }
 
-    private void makeCall(String contactNumber) {
+    private void makeCall(String phoneNumber) {
         // this method is called for making a call.
         // on below line we are calling an intent to make a call.
         Intent callIntent = new Intent(Intent.ACTION_CALL);
         // on below line we are setting data to it.
-        callIntent.setData(Uri.parse("tel:" + contactNumber));
+        callIntent.setData(Uri.parse("tel:" + phoneNumber));
         // on below line we are checking if the calling permissions are granted not.
         if (ActivityCompat.checkSelfPermission(ContactDetailActivity.this,
                 Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
