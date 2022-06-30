@@ -2,6 +2,7 @@ package com.example.immersioncamp1;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -152,6 +153,41 @@ public class MainActivity extends AppCompatActivity {
         builder.show();
     }
 
+    private String getRawContactId(String contactId) {
+        String[] projection = new String[]{ContactsContract.RawContacts._ID};
+        String selection = ContactsContract.RawContacts.CONTACT_ID + "=?";
+        String[] selectionArgs = new String[]{contactId};
+        Cursor c = getContentResolver().query(ContactsContract.RawContacts.CONTENT_URI, projection, selection, selectionArgs, null);
+        if (c == null) return null;
+        int rawContactId = -1;
+        if (c.moveToFirst()) {
+            rawContactId = c.getInt(c.getColumnIndexOrThrow(ContactsContract.RawContacts._ID));
+        }
+        c.close();
+        return String.valueOf(rawContactId);
+
+    }
+
+    private String getCompanyName(String rawContactId) {
+        try {
+            String orgWhere = ContactsContract.Data.RAW_CONTACT_ID + " = ? AND " + ContactsContract.Data.MIMETYPE + " = ?";
+            String[] orgWhereParams = new String[]{rawContactId,
+                    ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE};
+            Cursor cursor = getContentResolver().query(ContactsContract.Data.CONTENT_URI,
+                    null, orgWhere, orgWhereParams, null);
+            if (cursor == null) return null;
+            String name = null;
+            if (cursor.moveToFirst()) {
+                name = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Organization.COMPANY));
+            }
+            cursor.close();
+            return name;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     @SuppressLint("NotifyDataSetChanged")
     private void getContacts() {
         // this method is use to read contact from users device.
@@ -187,6 +223,10 @@ public class MainActivity extends AppCompatActivity {
                             // on below line we are getting the phone number for our users and then adding the name along with phone number in array list.
                             phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER));
                         }
+
+                        String rawContactId = getRawContactId(contactId);
+                        organization = getCompanyName(rawContactId);
+
                         contactsModalArrayList.add(new ContactsModal(displayName, phoneNumber, organization, email));
                         // on below line we are closing our phone cursor.
                         phoneCursor.close();
