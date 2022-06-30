@@ -252,4 +252,6 @@ public class MainActivity extends AppCompatActivity {
         loadingPB.setVisibility(View.GONE);
         contactRVAdapter.notifyDataSetChanged();
     }
+
+
 }

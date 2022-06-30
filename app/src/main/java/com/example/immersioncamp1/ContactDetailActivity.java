@@ -12,6 +12,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.example.immersioncamp1.utils.CustomGalleryActivity;
+
 public class ContactDetailActivity extends AppCompatActivity {
 
     // creating variables for our image view and text view and string. .
@@ -53,6 +55,15 @@ public class ContactDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // calling a method to send message
                 sendMessage(contactNumber);
+            }
+        });
+
+        // call gallery
+        contactIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), CustomGalleryActivity.class);
+                startActivity(intent);
             }
         });
     }
