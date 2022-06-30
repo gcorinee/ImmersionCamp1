@@ -29,7 +29,7 @@ import java.util.ArrayList;
  * all the images in the folder inside a RecyclerView
  */
 
-public class ImageDisplay extends AppCompatActivity implements ItemClickListener {
+public class ImageDisplayActivity extends AppCompatActivity implements ItemClickListener {
 
     RecyclerView imageRecycler;
     ArrayList<PictureFacer> allPictures;
@@ -56,7 +56,7 @@ public class ImageDisplay extends AppCompatActivity implements ItemClickListener
         if (allPictures.isEmpty()) {
             load.setVisibility(View.VISIBLE);
             allPictures = getAllImagesByFolder(folderPath);
-            imageRecycler.setAdapter(new PictureAdapter(allPictures, ImageDisplay.this, this));
+            imageRecycler.setAdapter(new PictureAdapter(allPictures, ImageDisplayActivity.this, this));
             load.setVisibility(View.GONE);
         } else {
 
@@ -70,7 +70,7 @@ public class ImageDisplay extends AppCompatActivity implements ItemClickListener
      */
     @Override
     public void onPicClicked(PicHolder holder, int position, ArrayList<PictureFacer> pics) {
-        PictureBrowserFragment browser = PictureBrowserFragment.newInstance(pics, position, ImageDisplay.this);
+        PictureBrowserFragment browser = PictureBrowserFragment.newInstance(pics, position, ImageDisplayActivity.this);
 
         // Note that we need the API version check here because the actual transition classes (e.g. Fade)
         // are not in the support library and are only available in API 21+. The methods we are calling on the Fragment
@@ -108,7 +108,7 @@ public class ImageDisplay extends AppCompatActivity implements ItemClickListener
         Uri allVideosUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
         String[] projection = {MediaStore.Images.ImageColumns.DATA, MediaStore.Images.Media.DISPLAY_NAME,
                 MediaStore.Images.Media.SIZE};
-        Cursor cursor = ImageDisplay.this.getContentResolver().query(allVideosUri, projection, MediaStore.Images.Media.DATA + " like ? ", new String[]{"%" + path + "%"}, null);
+        Cursor cursor = ImageDisplayActivity.this.getContentResolver().query(allVideosUri, projection, MediaStore.Images.Media.DATA + " like ? ", new String[]{"%" + path + "%"}, null);
         try {
             cursor.moveToFirst();
             do {

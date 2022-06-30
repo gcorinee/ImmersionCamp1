@@ -1,4 +1,4 @@
-package com.example.immersioncamp1.utils;
+package com.example.immersioncamp1;
 
 import android.Manifest;
 import android.content.Intent;
@@ -21,10 +21,16 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.immersioncamp1.ImageDisplay;
-import com.example.immersioncamp1.R;
+import com.example.immersioncamp1.utils.ImageFolder;
+import com.example.immersioncamp1.utils.ItemClickListener;
+import com.example.immersioncamp1.utils.MarginDecoration;
+import com.example.immersioncamp1.utils.PicHolder;
+import com.example.immersioncamp1.utils.PictureFacer;
+import com.example.immersioncamp1.utils.PictureFolderAdapter;
 
 import java.util.ArrayList;
 
@@ -68,12 +74,24 @@ public class CustomGalleryActivity extends AppCompatActivity implements ItemClic
         if (folds.isEmpty()) {
             empty.setVisibility(View.VISIBLE);
         } else {
-            RecyclerView.Adapter folderAdapter = new PictureFolderAdapter(folds, CustomGalleryActivity.this, this);
+            RecyclerView.Adapter<PictureFolderAdapter.FolderHolder> folderAdapter = new PictureFolderAdapter(folds, CustomGalleryActivity.this, this);
             folderRecycler.setAdapter(folderAdapter);
         }
 
         changeStatusBarColor();
+
+        // finish Activity
+        ImageButton finishActivity = findViewById(R.id.menu);
+        finishActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast finMessage = Toast.makeText(getApplicationContext(), "연락처 사진 변경 취소", Toast.LENGTH_SHORT);
+                finMessage.show();
+                finish();
+            }
+        });
     }
+
     /**
      * 1
      *
@@ -83,9 +101,12 @@ public class CustomGalleryActivity extends AppCompatActivity implements ItemClic
     private ArrayList<ImageFolder> getPicturePaths() {
         ArrayList<ImageFolder> picFolders = new ArrayList<>();
         ArrayList<String> picPaths = new ArrayList<>();
-        Uri allImagesUri = android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-        String[] projection = {MediaStore.Images.ImageColumns.DATA, MediaStore.Images.Media.DISPLAY_NAME,
-                MediaStore.Images.Media.BUCKET_DISPLAY_NAME, MediaStore.Images.Media.BUCKET_ID};
+        Uri allImagesUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        String[] projection = {
+                MediaStore.Images.Media.DISPLAY_NAME,
+                MediaStore.Images.ImageColumns.DATA,
+                MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
+                MediaStore.Images.Media.BUCKET_ID};
         Cursor cursor = this.getContentResolver().query(allImagesUri, projection, null, null, null);
         try {
             if (cursor != null) {
@@ -150,7 +171,7 @@ public class CustomGalleryActivity extends AppCompatActivity implements ItemClic
      */
     @Override
     public void onPicClicked(String pictureFolderPath, String folderName) {
-        Intent move = new Intent(CustomGalleryActivity.this, ImageDisplay.class);
+        Intent move = new Intent(CustomGalleryActivity.this, ImageDisplayActivity.class);
         move.putExtra("folderPath", pictureFolderPath);
         move.putExtra("folderName", folderName);
 

@@ -12,8 +12,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import com.example.immersioncamp1.utils.CustomGalleryActivity;
-
 public class ContactDetailActivity extends AppCompatActivity {
 
     // creating variables for our image view and text view and string. .
