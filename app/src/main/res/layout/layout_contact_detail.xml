@@ -8,6 +8,8 @@
     tools:context=".ContactDetailActivity">
 
     <!--image view for contact-->
+
+    <!--text view for displaying user name-->
     <ImageView
         android:id="@+id/idIVContact"
         android:layout_width="match_parent"
@@ -17,7 +19,6 @@
         android:src="@drawable/ic_launcher_background"
         app:tint="@color/white" />
 
-    <!--text view for displaying user name-->
     <TextView
         android:id="@+id/idTVName"
         android:layout_width="match_parent"
