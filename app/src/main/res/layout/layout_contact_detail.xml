@@ -7,15 +7,42 @@
     android:layout_height="match_parent"
     tools:context=".ContactDetailActivity">
 
+    <LinearLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:paddingLeft="15dp"
+        android:paddingBottom="5dp"
+        android:orientation="horizontal"
+        android:gravity="bottom">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="10dp"
+            android:text="&lt;"
+            android:textColor="@color/gray_3"
+            android:textStyle="bold"
+            android:textSize="45dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Contacts"
+            android:textColor="@color/gray_3"
+            android:textStyle="bold"
+            android:textSize="45dp"/>
+    </LinearLayout>
+
     <!--image view for contact-->
     <ImageView
         android:id="@+id/idIVContact"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:background="@color/purple_200"
-        android:padding="50dp"
-        android:src="@drawable/ic_launcher_background"
-        />
+        android:layout_height="200dp"
+        android:layout_below="@id/topBar"
+        android:background="@color/white"
+        android:layout_marginTop="30dp"
+        android:paddingLeft="80dp"
+        android:paddingRight="80dp"
+        android:src="@drawable/ic_launcher_background" />
 
     <!--text view for displaying user name-->
     <TextView
@@ -23,27 +50,34 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/idIVContact"
-        android:background="@color/purple_200"
-        android:padding="20dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/border_bottom"
+        android:padding="30dp"
         android:text="Name"
-        android:textColor="@color/white"
-        android:textSize="18sp" />
+        android:textAlignment="center"
+        android:textColor="@color/gray_3"
+        android:textSize="30dp"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/idTVName"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp">
 
         <TextView
             android:id="@+id/idTVOrganization"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:text="Organization" />
+            android:layout_marginTop="10dp"
+            android:text="Organization"
+            android:textColor="@color/gray_3"/>
 
         <!--text view for displaying user contact-->
         <TextView
@@ -51,18 +85,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
-            android:text="Phone" />
+            android:text="Phone"
+            android:textColor="@color/gray_3"/>
 
         <TextView
             android:id="@+id/idTVEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
-            android:text="Email" />
+            android:text="Email"
+            android:textColor="@color/gray_3"/>
 
     </LinearLayout>
 
@@ -71,10 +105,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="60dp"
-        android:layout_marginEnd="4dp"
-        app:cardCornerRadius="4dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        app:cardCornerRadius="10dp"
         app:cardElevation="4dp">
 
         <RelativeLayout
@@ -84,21 +119,21 @@
             <!--image view for making a call -->
             <ImageView
                 android:id="@+id/idIVCall"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:padding="4dp"
                 android:src="@drawable/ic_launcher_background"
-                app:tint="@color/purple_700" />
+                app:tint="@color/gray_E" />
 
             <!--image view for displaying message icon-->
             <ImageView
                 android:id="@+id/idIVMessage"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_alignParentEnd="true"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
@@ -106,7 +141,7 @@
                 android:layout_marginBottom="8dp"
                 android:padding="4dp"
                 android:src="@drawable/ic_launcher_background"
-                app:tint="@color/purple_700" />
+                app:tint="@color/gray_E" />
 
         </RelativeLayout>
 

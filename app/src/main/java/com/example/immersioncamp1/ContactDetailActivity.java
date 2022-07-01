@@ -14,6 +14,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,6 +30,7 @@ public class ContactDetailActivity extends AppCompatActivity {
     private String name, phoneNumber, organization, email;
     private TextView phoneTV, nameTV, organizationTV, emailTV;
     private ImageView contactIV, callIV, messageIV;
+    private LinearLayout topBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,7 @@ public class ContactDetailActivity extends AppCompatActivity {
         emailTV = findViewById(R.id.idTVEmail);
         callIV = findViewById(R.id.idIVCall);
         messageIV = findViewById(R.id.idIVMessage);
+        topBar = findViewById(R.id.topBar);
 
         nameTV.setText(name);
         phoneTV.setText(phoneNumber);
@@ -83,6 +86,14 @@ public class ContactDetailActivity extends AppCompatActivity {
                 Uri imageUri = getImageUriFromGallery();
                 Bitmap newPhoto = getBitmapFromImageUri(imageUri);
                 setPhotoByContactId(modal.getContactId(), newPhoto);
+            }
+        });
+
+        topBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(ContactDetailActivity.this, MainActivity.class);
+                startActivity(i);
             }
         });
     }
