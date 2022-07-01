@@ -3,6 +3,7 @@
 package com.example.immersioncamp1;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -12,15 +13,15 @@ public class ContactsModal implements Parcelable {
     private String phoneNumber;
     private String organization;
     private String email;
-    private Bitmap photo;
+    private Uri photoUri;
 
-    public ContactsModal (String contactId, String userName, String phoneNumber, String organization, String email, Bitmap photo) {
+    public ContactsModal (String contactId, String userName, String phoneNumber, String organization, String email, Uri photoUri) {
         this.contactId = contactId;
         this.userName = userName;
         this.phoneNumber = phoneNumber;
         this.organization = organization;
         this.email = email;
-        this.photo = photo;
+        this.photoUri = photoUri;
     }
     public String getContactId() { return contactId; }
     public String getUserName() {
@@ -39,18 +40,18 @@ public class ContactsModal implements Parcelable {
     public void setOrganization(String organization) { this.organization = organization; }
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
-    public Bitmap getPhoto() { return photo; }
-    public void setPhoto(Bitmap photo) { this.photo = photo; }
+    public Uri getPhotoUri() { return photoUri; }
+    public void setPhotoUri(Uri photoUri) { this.photoUri = photoUri; }
 
     public ContactsModal(Parcel in) {
-        String[] data = new String[4];
+        String[] data = new String[5];
 
         in.readStringArray(data);
         this.userName = data[0];
         this.phoneNumber = data[1];
         this.organization = data[2];
         this.email = data[3];
-        this.photo = in.readParcelable(null);
+        this.photoUri = Uri.parse(data[4]);
     }
 
     @Override
@@ -65,9 +66,9 @@ public class ContactsModal implements Parcelable {
                 this.phoneNumber,
                 this.organization,
                 this.email,
+                this.photoUri.toString()
         };
         dest.writeStringArray(data);
-        dest.writeParcelable(this.photo, flags);
     }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {

@@ -57,7 +57,7 @@ public class ContactDetailActivity extends AppCompatActivity {
         phoneTV.setText(phoneNumber);
         organizationTV.setText(organization);
         emailTV.setText(email);
-        contactIV.setImageBitmap(modal.getPhoto());
+        contactIV.setImageBitmap(MainActivity.getPhoto(this, modal.getPhotoUri()));
 
         // on below line adding click listener for our calling image view.
         callIV.setOnClickListener(new View.OnClickListener() {

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
@@ -194,18 +195,21 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public InputStream openDisplayPhoto(String contactId) {
-        ContentResolver cr = getContentResolver();
+    public Uri getPhotoUri(String contactId) {
         Uri contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(contactId));
+        return contactUri;
+    }
+
+    public static Bitmap getPhoto(Context context, Uri uri) {
+        ContentResolver cr = context.getContentResolver();
         try {
-            InputStream photo_stream = ContactsContract.Contacts.openContactPhotoInputStream(cr, contactUri, true);
-            return photo_stream;
+            InputStream photo_stream = ContactsContract.Contacts.openContactPhotoInputStream(cr, uri, true);
+            Bitmap bitmap = BitmapFactory.decodeStream(photo_stream);
+            return bitmap;
         } catch (Exception e) {
             return null;
         }
     }
-
-
 
     @SuppressLint("NotifyDataSetChanged")
     private void getContacts() {
@@ -231,8 +235,7 @@ public class MainActivity extends AppCompatActivity {
                         String phoneNumber = "";
                         String organization = "";
                         String email = "";
-                        InputStream photo = null;
-                        InputStream displayPhoto = null;
+                        Uri photoUri = null;
                         Cursor phoneCursor = getContentResolver().query(
                                 ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                                 null,
@@ -257,10 +260,9 @@ public class MainActivity extends AppCompatActivity {
                             email = emailCursor.getString(emailCursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Email.DATA));
                         }
 
-                        photo = openDisplayPhoto(contactId);
-                        Bitmap bitmap = BitmapFactory.decodeStream(photo);
+                        photoUri = getPhotoUri(contactId);
 
-                        contactsModalArrayList.add(new ContactsModal(contactId, displayName, phoneNumber, organization, email, bitmap));
+                        contactsModalArrayList.add(new ContactsModal(contactId, displayName, phoneNumber, organization, email, photoUri));
                         // on below line we are closing our phone cursor.
                         phoneCursor.close();
                         emailCursor.close();

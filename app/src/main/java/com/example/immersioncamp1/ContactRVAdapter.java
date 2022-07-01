@@ -3,8 +3,13 @@
 package com.example.immersioncamp1;
 
 import android.annotation.SuppressLint;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +20,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class ContactRVAdapter extends RecyclerView.Adapter<ContactRVAdapter.ViewHolder> {
@@ -52,7 +58,7 @@ public class ContactRVAdapter extends RecyclerView.Adapter<ContactRVAdapter.View
         // on below line we are setting data to our text view.
         holder.contactTV.setText(modal.getUserName());
         holder.contactDetailTV.setText(modal.getOrganization());
-        holder.contactIV.setImageBitmap(modal.getPhoto());
+        holder.contactIV.setImageBitmap(MainActivity.getPhoto(context, modal.getPhotoUri()));
         // on below line we are adding on click listener to our item of recycler view.
         holder.itemView.setOnClickListener(v -> {
             // on below line we are opening a new activity and passing data to it.
@@ -83,4 +89,6 @@ public class ContactRVAdapter extends RecyclerView.Adapter<ContactRVAdapter.View
             contactDetailTV = itemView.findViewById(R.id.idTVOrganization);
         }
     }
+
+
 }
