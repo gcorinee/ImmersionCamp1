@@ -3,9 +3,10 @@
 package com.example.immersioncamp1;
 
 import android.graphics.Bitmap;
-import android.renderscript.ScriptGroup;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class ContactsModal {
+public class ContactsModal implements Parcelable {
     private String userName;
     private String phoneNumber;
     private String organization;
@@ -37,4 +38,43 @@ public class ContactsModal {
     public void setEmail(String email) { this.email = email; }
     public Bitmap getPhoto() { return photo; }
     public void setPhoto(Bitmap photo) { this.photo = photo; }
+
+    public ContactsModal(Parcel in) {
+        String[] data = new String[4];
+
+        in.readStringArray(data);
+        this.userName = data[0];
+        this.phoneNumber = data[1];
+        this.organization = data[2];
+        this.email = data[3];
+        this.photo = in.readParcelable(null);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        String[] data = new String[] {
+                this.userName,
+                this.phoneNumber,
+                this.organization,
+                this.email,
+        };
+        dest.writeStringArray(data);
+        dest.writeParcelable(this.photo, flags);
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public ContactsModal createFromParcel(Parcel in) {
+            return new ContactsModal(in);
+        }
+        public ContactsModal[] newArray(int size) {
+            return new ContactsModal[size];
+        }
+    };
 }
+
+

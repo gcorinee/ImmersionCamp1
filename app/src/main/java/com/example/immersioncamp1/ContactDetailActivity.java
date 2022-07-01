@@ -28,11 +28,11 @@ public class ContactDetailActivity extends AppCompatActivity {
 
         // on below line we are getting data which 
         // we passed in our adapter class with intent.
-        name = getIntent().getStringExtra("name");
-        phoneNumber = getIntent().getStringExtra("phoneNumber");
-        organization = getIntent().getStringExtra("organization");
-        email = getIntent().getStringExtra("email");
-        int position = getIntent().getIntExtra("photo", 0);
+        ContactsModal modal = getIntent().getParcelableExtra("contact");
+        name = modal.getUserName();
+        phoneNumber = modal.getPhoneNumber();
+        organization = modal.getOrganization();
+        email = modal.getEmail();
 
         // initializing our views.
         nameTV = findViewById(R.id.idTVName);
@@ -46,7 +46,8 @@ public class ContactDetailActivity extends AppCompatActivity {
         emailTV.setText(email);
         callIV = findViewById(R.id.idIVCall);
         messageIV = findViewById(R.id.idIVMessage);
-        contactIV.setImageBitmap(ContactRVAdapter.getPhoto(position));
+//        contactIV.setImageBitmap(ContactRVAdapter.getPhoto(position));
+        contactIV.setImageBitmap(modal.getPhoto());
 
         // on below line adding click listener for our calling image view.
         callIV.setOnClickListener(new View.OnClickListener() {

@@ -5,7 +5,6 @@ package com.example.immersioncamp1;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,26 +52,15 @@ public class ContactRVAdapter extends RecyclerView.Adapter<ContactRVAdapter.View
         // on below line we are setting data to our text view.
         holder.contactTV.setText(modal.getUserName());
         holder.contactDetailTV.setText(modal.getOrganization());
-        Bitmap bitmap = modal.getPhoto();
-        holder.contactIV.setImageBitmap(bitmap);
+        holder.contactIV.setImageBitmap(modal.getPhoto());
         // on below line we are adding on click listener to our item of recycler view.
         holder.itemView.setOnClickListener(v -> {
             // on below line we are opening a new activity and passing data to it.
             Intent i = new Intent(context, ContactDetailActivity.class);
-            i.putExtra("name", modal.getUserName());
-            i.putExtra("phoneNumber", modal.getPhoneNumber());
-            i.putExtra("organization", modal.getOrganization());
-            i.putExtra("email", modal.getEmail());
-            i.putExtra("photo", position);
+            i.putExtra("contact", modal);
             // on below line we are starting a new activity.
             context.startActivity(i);
         });
-    }
-
-    public static Bitmap getPhoto(int position)
-    {
-        Bitmap photo = contactsModalArrayList.get(position).getPhoto();
-        return photo;
     }
 
     @Override
