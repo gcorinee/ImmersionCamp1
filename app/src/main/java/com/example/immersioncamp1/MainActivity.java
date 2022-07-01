@@ -260,7 +260,7 @@ public class MainActivity extends AppCompatActivity {
                         photo = openDisplayPhoto(contactId);
                         Bitmap bitmap = BitmapFactory.decodeStream(photo);
 
-                        contactsModalArrayList.add(new ContactsModal(displayName, phoneNumber, organization, email, bitmap));
+                        contactsModalArrayList.add(new ContactsModal(contactId, displayName, phoneNumber, organization, email, bitmap));
                         // on below line we are closing our phone cursor.
                         phoneCursor.close();
                         emailCursor.close();

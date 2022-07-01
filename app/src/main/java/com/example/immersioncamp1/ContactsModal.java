@@ -7,19 +7,22 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class ContactsModal implements Parcelable {
+    private String contactId;
     private String userName;
     private String phoneNumber;
     private String organization;
     private String email;
     private Bitmap photo;
 
-    public ContactsModal (String userName, String phoneNumber, String organization, String email, Bitmap photo) {
+    public ContactsModal (String contactId, String userName, String phoneNumber, String organization, String email, Bitmap photo) {
+        this.contactId = contactId;
         this.userName = userName;
         this.phoneNumber = phoneNumber;
         this.organization = organization;
         this.email = email;
         this.photo = photo;
     }
+    public String getContactId() { return contactId; }
     public String getUserName() {
         return userName;
     }
