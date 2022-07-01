@@ -9,5 +9,8 @@
     <dimen name="folder_column_width">120dp</dimen>
 
     <dimen name="picture_column_width">90dp</dimen>
+    <dimen name="photo_head">66dp</dimen>
+    <dimen name="photos_textsize">35sp</dimen>
+    <dimen name="photos_padding">10dp</dimen>
 
 </resources>
