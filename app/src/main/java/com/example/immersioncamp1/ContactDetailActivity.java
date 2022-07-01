@@ -1,10 +1,16 @@
 package com.example.immersioncamp1;
 
 import android.Manifest;
+import android.content.ContentUris;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.AssetFileDescriptor;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,6 +18,11 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 public class ContactDetailActivity extends AppCompatActivity {
 
@@ -22,6 +33,7 @@ public class ContactDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_contact_detail);
 
@@ -31,6 +43,8 @@ public class ContactDetailActivity extends AppCompatActivity {
         phoneNumber = getIntent().getStringExtra("phoneNumber");
         organization = getIntent().getStringExtra("organization");
         email = getIntent().getStringExtra("email");
+        byte[] byteArray = getIntent().getByteArrayExtra("photo");
+        Log.d(null, "length is: "+ byteArray.length);
 
         // initializing our views.
         nameTV = findViewById(R.id.idTVName);
@@ -44,6 +58,9 @@ public class ContactDetailActivity extends AppCompatActivity {
         emailTV.setText(email);
         callIV = findViewById(R.id.idIVCall);
         messageIV = findViewById(R.id.idIVMessage);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+        Log.d(null, "ldldld is: " + bitmap.getByteCount());
+        contactIV.setImageBitmap(bitmap);
 
         // on below line adding click listener for our calling image view.
         callIV.setOnClickListener(new View.OnClickListener() {
@@ -68,7 +85,7 @@ public class ContactDetailActivity extends AppCompatActivity {
         // in this method we are calling an intent to send sms.
         // on below line we are passing our contact number.
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("sms:" + phoneNumber));
-        intent.putExtra("sms_body", "Enter your messaage");
+        intent.putExtra("sms_body", "Enter your message");
         startActivity(intent);
     }
 

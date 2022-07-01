@@ -5,6 +5,9 @@ package com.example.immersioncamp1;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,16 +17,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.amulyakhare.textdrawable.TextDrawable;
-import com.amulyakhare.textdrawable.util.ColorGenerator;
-
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class ContactRVAdapter extends RecyclerView.Adapter<ContactRVAdapter.ViewHolder> {
 
     // creating variables for context and array list.
     private Context context;
-    private ArrayList<ContactsModal> contactsModalArrayList;
+    private static ArrayList<ContactsModal> contactsModalArrayList;
 
     // creating a constructor
     public ContactRVAdapter(Context context, ArrayList<ContactsModal> contactsModalArrayList) {
@@ -54,18 +57,11 @@ public class ContactRVAdapter extends RecyclerView.Adapter<ContactRVAdapter.View
         // on below line we are setting data to our text view.
         holder.contactTV.setText(modal.getUserName());
         holder.contactDetailTV.setText(modal.getOrganization());
-        ColorGenerator generator = ColorGenerator.MATERIAL;
-        // generate random color
-        int color = generator.getRandomColor();
-
-        // below text drawable is a circular.
-        TextDrawable drawable2 = TextDrawable.builder().beginConfig()
-                .width(100)
-                .height(100)
-                .endConfig()
-                .buildRound(modal.getUserName().substring(0, 1), color);
-        // setting image to our image view on below line.
-        holder.contactIV.setImageDrawable(drawable2);
+        Bitmap bitmap = BitmapFactory.decodeStream(modal.getPhoto());
+        holder.contactIV.setImageBitmap(bitmap);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
         // on below line we are adding on click listener to our item of recycler view.
         holder.itemView.setOnClickListener(v -> {
             // on below line we are opening a new activity and passing data to it.
@@ -74,6 +70,7 @@ public class ContactRVAdapter extends RecyclerView.Adapter<ContactRVAdapter.View
             i.putExtra("phoneNumber", modal.getPhoneNumber());
             i.putExtra("organization", modal.getOrganization());
             i.putExtra("email", modal.getEmail());
+            i.putExtra("photo", byteArray);
             // on below line we are starting a new activity.
             context.startActivity(i);
         });

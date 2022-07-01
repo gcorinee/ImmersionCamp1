@@ -15,7 +15,7 @@
         android:background="@color/purple_200"
         android:padding="50dp"
         android:src="@drawable/ic_launcher_background"
-        app:tint="@color/white" />
+        />
 
     <!--text view for displaying user name-->
     <TextView

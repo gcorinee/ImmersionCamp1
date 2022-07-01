@@ -3,7 +3,9 @@ package com.example.immersioncamp1;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -29,6 +31,9 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.PermissionRequestErrorListener;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -189,6 +194,41 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public InputStream openPhoto(String contactId) {
+        Uri contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(contactId));
+        Uri photoUri = Uri.withAppendedPath(contactUri, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
+        Cursor cursor = getContentResolver().query(photoUri,
+                new String[] {ContactsContract.Contacts.Photo.PHOTO}, null, null, null);
+        if (cursor == null) {
+            return null;
+        }
+        try {
+            if (cursor.moveToFirst()) {
+                byte[] data = cursor.getBlob(0);
+                if (data != null) {
+                    return new ByteArrayInputStream(data);
+                }
+            }
+        } finally {
+            cursor.close();
+        }
+        return null;
+    }
+
+    public InputStream openDisplayPhoto(String contactId) {
+        Uri contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(contactId));
+        Uri displayPhotoUri = Uri.withAppendedPath(contactUri, ContactsContract.Contacts.Photo.DISPLAY_PHOTO);
+        try {
+            AssetFileDescriptor fd =
+                    getContentResolver().openAssetFileDescriptor(displayPhotoUri, "r");
+            return fd.createInputStream();
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+
+
     @SuppressLint("NotifyDataSetChanged")
     private void getContacts() {
         // this method is use to read contact from users device.
@@ -213,6 +253,8 @@ public class MainActivity extends AppCompatActivity {
                         String phoneNumber = "";
                         String organization = "";
                         String email = "";
+                        InputStream photo = null;
+                        InputStream displayPhoto = null;
                         Cursor phoneCursor = getContentResolver().query(
                                 ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                                 null,
@@ -228,7 +270,6 @@ public class MainActivity extends AppCompatActivity {
                         String rawContactId = getRawContactId(contactId);
                         organization = getCompanyName(rawContactId);
 
-
                         Cursor emailCursor = getContentResolver().query(
                                 ContactsContract.CommonDataKinds.Email.CONTENT_URI, null,
                                 ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?",
@@ -238,7 +279,9 @@ public class MainActivity extends AppCompatActivity {
                             email = emailCursor.getString(emailCursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Email.DATA));
                         }
 
-                        contactsModalArrayList.add(new ContactsModal(displayName, phoneNumber, organization, email));
+                        photo = openPhoto(contactId);
+
+                        contactsModalArrayList.add(new ContactsModal(displayName, phoneNumber, organization, email, photo));
                         // on below line we are closing our phone cursor.
                         phoneCursor.close();
                         emailCursor.close();

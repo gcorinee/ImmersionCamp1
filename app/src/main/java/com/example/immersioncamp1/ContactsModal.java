@@ -2,17 +2,23 @@
 
 package com.example.immersioncamp1;
 
+import android.renderscript.ScriptGroup;
+
+import java.io.InputStream;
+
 public class ContactsModal {
     private String userName;
     private String phoneNumber;
     private String organization;
     private String email;
+    private InputStream photo;
 
-    public ContactsModal (String userName, String phoneNumber, String organization, String email) {
+    public ContactsModal (String userName, String phoneNumber, String organization, String email, InputStream photo) {
         this.userName = userName;
         this.phoneNumber = phoneNumber;
         this.organization = organization;
         this.email = email;
+        this.photo = photo;
     }
     public String getUserName() {
         return userName;
@@ -30,4 +36,6 @@ public class ContactsModal {
     public void setOrganization(String organization) { this.organization = organization; }
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
+    public InputStream getPhoto() { return photo; }
+    public void setPhoto(InputStream photo) { this.photo = photo; }
 }
