@@ -6,7 +6,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,10 +16,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class ContactRVAdapter extends RecyclerView.Adapter<ContactRVAdapter.ViewHolder> {
 
@@ -57,11 +53,8 @@ public class ContactRVAdapter extends RecyclerView.Adapter<ContactRVAdapter.View
         // on below line we are setting data to our text view.
         holder.contactTV.setText(modal.getUserName());
         holder.contactDetailTV.setText(modal.getOrganization());
-        Bitmap bitmap = BitmapFactory.decodeStream(modal.getPhoto());
+        Bitmap bitmap = modal.getPhoto();
         holder.contactIV.setImageBitmap(bitmap);
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] byteArray = stream.toByteArray();
         // on below line we are adding on click listener to our item of recycler view.
         holder.itemView.setOnClickListener(v -> {
             // on below line we are opening a new activity and passing data to it.
@@ -70,10 +63,16 @@ public class ContactRVAdapter extends RecyclerView.Adapter<ContactRVAdapter.View
             i.putExtra("phoneNumber", modal.getPhoneNumber());
             i.putExtra("organization", modal.getOrganization());
             i.putExtra("email", modal.getEmail());
-            i.putExtra("photo", byteArray);
+            i.putExtra("photo", position);
             // on below line we are starting a new activity.
             context.startActivity(i);
         });
+    }
+
+    public static Bitmap getPhoto(int position)
+    {
+        Bitmap photo = contactsModalArrayList.get(position).getPhoto();
+        return photo;
     }
 
     @Override

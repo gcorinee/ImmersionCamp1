@@ -7,6 +7,8 @@ import android.content.ContentUris;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -31,8 +33,6 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.PermissionRequestErrorListener;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -194,35 +194,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public InputStream openPhoto(String contactId) {
-        Uri contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(contactId));
-        Uri photoUri = Uri.withAppendedPath(contactUri, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
-        Cursor cursor = getContentResolver().query(photoUri,
-                new String[] {ContactsContract.Contacts.Photo.PHOTO}, null, null, null);
-        if (cursor == null) {
-            return null;
-        }
-        try {
-            if (cursor.moveToFirst()) {
-                byte[] data = cursor.getBlob(0);
-                if (data != null) {
-                    return new ByteArrayInputStream(data);
-                }
-            }
-        } finally {
-            cursor.close();
-        }
-        return null;
-    }
-
     public InputStream openDisplayPhoto(String contactId) {
+        ContentResolver cr = getContentResolver();
         Uri contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(contactId));
-        Uri displayPhotoUri = Uri.withAppendedPath(contactUri, ContactsContract.Contacts.Photo.DISPLAY_PHOTO);
         try {
-            AssetFileDescriptor fd =
-                    getContentResolver().openAssetFileDescriptor(displayPhotoUri, "r");
-            return fd.createInputStream();
-        } catch (IOException e) {
+            InputStream photo_stream = ContactsContract.Contacts.openContactPhotoInputStream(cr, contactUri, true);
+            return photo_stream;
+        } catch (Exception e) {
             return null;
         }
     }
@@ -279,9 +257,10 @@ public class MainActivity extends AppCompatActivity {
                             email = emailCursor.getString(emailCursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Email.DATA));
                         }
 
-                        photo = openPhoto(contactId);
+                        photo = openDisplayPhoto(contactId);
+                        Bitmap bitmap = BitmapFactory.decodeStream(photo);
 
-                        contactsModalArrayList.add(new ContactsModal(displayName, phoneNumber, organization, email, photo));
+                        contactsModalArrayList.add(new ContactsModal(displayName, phoneNumber, organization, email, bitmap));
                         // on below line we are closing our phone cursor.
                         phoneCursor.close();
                         emailCursor.close();
