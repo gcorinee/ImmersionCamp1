@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
                     ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE};
             Cursor cursor = getContentResolver().query(ContactsContract.Data.CONTENT_URI,
                     null, orgWhere, orgWhereParams, null);
-            if (cursor == null) return null;
+            if (cursor == null) return "";
             String name = null;
             if (cursor.moveToFirst()) {
                 name = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Organization.COMPANY));
@@ -191,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
             return name;
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return "";
         }
     }
 

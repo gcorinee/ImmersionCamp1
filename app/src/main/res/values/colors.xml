@@ -10,4 +10,6 @@
     <color name="gray_3">#333333</color>
     <color name="gray_E">#EEEEEE</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="message">#699CF8</color>
+    <color name="call">#69DC9F</color>
 </resources>

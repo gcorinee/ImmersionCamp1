@@ -3,19 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/idRLContact"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="wrap_content"
     android:layout_marginStart="10dp"
     android:layout_marginEnd="10dp"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp"
+    android:paddingTop="13dp"
+    android:paddingBottom="13dp"
     android:background="@drawable/border_bottom">
 
     <ImageView
         android:id="@+id/idIVContact"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_margin="8dp"
-        android:padding="3dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/round_outline"
+        android:clipToOutline="true"
         android:src="@mipmap/ic_launcher"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -26,27 +28,34 @@
         android:layout_height="60dp"
         android:orientation="vertical"
         app:layout_constraintLeft_toRightOf="@id/idIVContact"
-        app:layout_constraintTop_toTopOf="@id/idIVContact">
+        app:layout_constraintTop_toTopOf="@id/idIVContact"
+        android:gravity="center_vertical"
+        android:layout_marginStart="13dp">
         <TextView
             android:id="@+id/idTVName"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="0dp"
             android:text="@string/name"
             android:textColor="@color/gray_3"
             android:textStyle="bold"
             android:textSize="20dp"/>
 
-        <TextView
-            android:id="@+id/idTVOrganization"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/organization"
-            android:textColor="@color/gray_6" />
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_org"
+                android:paddingRight="5dp"/>
+            <TextView
+                android:id="@+id/idTVOrganization"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:text="@string/organization"
+                android:textColor="@color/gray_6" />
+        </LinearLayout>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

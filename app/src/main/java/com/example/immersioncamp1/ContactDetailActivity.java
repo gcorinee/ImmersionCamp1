@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -18,7 +19,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
+
+import com.jgabrielfreitas.core.BlurImageView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -29,8 +33,10 @@ public class ContactDetailActivity extends AppCompatActivity {
     // creating variables for our image view and text view and string. .
     private String name, phoneNumber, organization, email;
     private TextView phoneTV, nameTV, organizationTV, emailTV;
-    private ImageView contactIV, callIV, messageIV;
+    private ImageView contactIV;
     private LinearLayout topBar;
+    private CardView callCV, messageCV;
+    private BlurImageView backgroundIV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,18 +58,23 @@ public class ContactDetailActivity extends AppCompatActivity {
         phoneTV = findViewById(R.id.idTVPhone);
         organizationTV = findViewById(R.id.idTVOrganization);
         emailTV = findViewById(R.id.idTVEmail);
-        callIV = findViewById(R.id.idIVCall);
-        messageIV = findViewById(R.id.idIVMessage);
+        callCV = findViewById(R.id.idCVCall);
+        messageCV = findViewById(R.id.idCVMessage);
         topBar = findViewById(R.id.topBar);
+        backgroundIV = findViewById(R.id.idIVBackground);
 
         nameTV.setText(name);
         phoneTV.setText(phoneNumber);
         organizationTV.setText(organization);
         emailTV.setText(email);
-        contactIV.setImageBitmap(MainActivity.getPhoto(this, modal.getPhotoUri()));
+        contactIV.setClipToOutline(true);
+        Bitmap bitmap = MainActivity.getPhoto(this, modal.getPhotoUri());
+        contactIV.setImageBitmap(bitmap);
+        backgroundIV.setImageBitmap(bitmap);
+        backgroundIV.setBlur(2);
 
         // on below line adding click listener for our calling image view.
-        callIV.setOnClickListener(new View.OnClickListener() {
+        callCV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // calling a method to make a call.
@@ -72,7 +83,7 @@ public class ContactDetailActivity extends AppCompatActivity {
         });
 
         // on below line adding on click listener for our message image view.
-        messageIV.setOnClickListener(new View.OnClickListener() {
+        messageCV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // calling a method to send message
@@ -92,8 +103,7 @@ public class ContactDetailActivity extends AppCompatActivity {
         topBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(ContactDetailActivity.this, MainActivity.class);
-                startActivity(i);
+                finish();
             }
         });
     }
