@@ -34,7 +34,10 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.PermissionRequestErrorListener;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -160,18 +163,18 @@ public class MainActivity extends AppCompatActivity {
         builder.show();
     }
 
-    private String getRawContactId(String contactId) {
+    private static long getRawContactId(Context context, String contactId) {
         String[] projection = new String[]{ContactsContract.RawContacts._ID};
         String selection = ContactsContract.RawContacts.CONTACT_ID + "=?";
         String[] selectionArgs = new String[]{contactId};
-        Cursor c = getContentResolver().query(ContactsContract.RawContacts.CONTENT_URI, projection, selection, selectionArgs, null);
-        if (c == null) return null;
+        Cursor c = context.getContentResolver().query(ContactsContract.RawContacts.CONTENT_URI, projection, selection, selectionArgs, null);
+        if (c == null) return 0;
         int rawContactId = -1;
         if (c.moveToFirst()) {
             rawContactId = c.getInt(c.getColumnIndexOrThrow(ContactsContract.RawContacts._ID));
         }
         c.close();
-        return String.valueOf(rawContactId);
+        return rawContactId;
 
     }
 
@@ -249,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
                             phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER));
                         }
 
-                        String rawContactId = getRawContactId(contactId);
+                        String rawContactId = String.valueOf(getRawContactId(MainActivity.this, contactId));
                         organization = getCompanyName(rawContactId);
 
                         Cursor emailCursor = getContentResolver().query(
@@ -263,6 +266,7 @@ public class MainActivity extends AppCompatActivity {
 
                         photoUri = getPhotoUri(contactId);
 
+                        Log.e(null, "wowowow: " + contactId);
                         contactsModalArrayList.add(new ContactsModal(contactId, displayName, phoneNumber, organization, email, photoUri));
                         // on below line we are closing our phone cursor.
                         phoneCursor.close();
@@ -281,5 +285,28 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         getContacts();
+    }
+
+
+    public static void setPhotoByContactId(Context context, String contactId, Bitmap bmp) {
+        Log.e(null, "HELLODDKJDNJ");
+        long rawContactId = getRawContactId(context, contactId);
+        Log.e(null, "22HELLODDKJDNJ");
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        Log.e(null, "33HELLODDKJDNJ");
+        bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        Log.e(null, "44HELLODDKJDNJ");
+        byte[] byteArray = stream.toByteArray();
+        Uri pictureUri = Uri.withAppendedPath(ContentUris.withAppendedId(ContactsContract.RawContacts.CONTENT_URI,
+                rawContactId), ContactsContract.RawContacts.DisplayPhoto.CONTENT_DIRECTORY);
+        try {
+            AssetFileDescriptor afd = context.getContentResolver().openAssetFileDescriptor(pictureUri, "rw");
+            OutputStream os = afd.createOutputStream();
+            os.write(byteArray);
+            os.close();
+            afd.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
