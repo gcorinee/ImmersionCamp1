@@ -36,6 +36,7 @@ import java.util.ArrayList;
 
 public class CustomGalleryActivity extends AppCompatActivity implements ItemClickListener {
 
+    private final String TAG = "+CustomGalleryActivity";
     RecyclerView folderRecycler;
     TextView empty;
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
@@ -79,17 +80,6 @@ public class CustomGalleryActivity extends AppCompatActivity implements ItemClic
         }
 
         changeStatusBarColor();
-
-        // finish Activity
-        ImageButton finishActivity = findViewById(R.id.menu);
-        finishActivity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast finMessage = Toast.makeText(getApplicationContext(), "연락처 사진 변경 취소", Toast.LENGTH_SHORT);
-                finMessage.show();
-                finish();
-            }
-        });
     }
 
     /**
@@ -190,5 +180,21 @@ public class CustomGalleryActivity extends AppCompatActivity implements ItemClic
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Log.e(TAG, "onResume");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.e(TAG, "onRestart");
+        if (ContactDetailActivity.imgPathViewModel.getImgPath() != null) {
+            finish();
+        }
     }
 }

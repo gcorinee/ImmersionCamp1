@@ -5,12 +5,18 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
+
+import com.example.immersioncamp1.utils.ImgPathViewModel;
 
 public class ContactDetailActivity extends AppCompatActivity {
 
@@ -18,6 +24,10 @@ public class ContactDetailActivity extends AppCompatActivity {
     private String contactName, contactNumber;
     private TextView contactTV, nameTV;
     private ImageView contactIV, callIV, messageIV;
+
+    public static ImgPathViewModel imgPathViewModel;
+
+    private final String TAG = "+ContactDetailActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +66,7 @@ public class ContactDetailActivity extends AppCompatActivity {
             }
         });
 
-        // call gallery
+        // on below line adding on click listener for custom gallery.
         contactIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,5 +97,24 @@ public class ContactDetailActivity extends AppCompatActivity {
         }
         // at last we are starting activity.
         startActivity(callIntent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        imgPathViewModel = new ViewModelProvider(this).get(ImgPathViewModel.class);
+        Log.e(TAG, "onResume");
+        if (imgPathViewModel.getImgPath() != null) {
+            Log.e(TAG, imgPathViewModel.getImgPath());
+        } else {
+            Log.e(TAG, "imgPath is null");
+        }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.e(TAG, "onRestart");
     }
 }

@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.transition.Fade;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -31,11 +32,14 @@ import java.util.ArrayList;
 
 public class ImageDisplayActivity extends AppCompatActivity implements ItemClickListener {
 
+    private final String TAG = "+ImageDisplayActivity";
+
     RecyclerView imageRecycler;
     ArrayList<PictureFacer> allPictures;
     ProgressBar load;
     String folderPath;
     TextView folderName;
+//    String imgPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +76,11 @@ public class ImageDisplayActivity extends AppCompatActivity implements ItemClick
     public void onPicClicked(PicHolder holder, int position, ArrayList<PictureFacer> pics) {
         PictureBrowserFragment browser = PictureBrowserFragment.newInstance(pics, position, ImageDisplayActivity.this);
 
+//        Bundle args = new Bundle();
+//        args.putString("SENDER_KEY", null);
+//        args.putString("PATH_KEY", null);
+//        browser.setArguments(args);
+
         // Note that we need the API version check here because the actual transition classes (e.g. Fade)
         // are not in the support library and are only available in API 21+. The methods we are calling on the Fragment
         // ARE available in the support library (though they don't do anything on API < 21)
@@ -89,7 +98,6 @@ public class ImageDisplayActivity extends AppCompatActivity implements ItemClick
                 .add(R.id.displayContainer, browser)
                 .addToBackStack(null)
                 .commit();
-
     }
 
     @Override
@@ -134,5 +142,24 @@ public class ImageDisplayActivity extends AppCompatActivity implements ItemClick
         return images;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+        Log.e(TAG, "onResume");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.e(TAG, "onRestart");
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (ContactDetailActivity.imgPathViewModel.getImgPath() != null) {
+            finish();
+        }
+    }
 }
