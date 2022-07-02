@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../layout/custom_preview.xml" value="0.2340702210663199" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.149" />
         <entry key="app/src/main/res/drawable/back.xml" value="0.148" />
         <entry key="app/src/main/res/drawable/border_bottom.xml" value="0.1425" />
@@ -10,11 +11,12 @@
         <entry key="app/src/main/res/drawable/ic_org.xml" value="0.1425" />
         <entry key="app/src/main/res/drawable/round_outline.xml" value="0.148" />
         <entry key="app/src/main/res/layout/activity_create_new_contact.xml" value="0.13229166666666667" />
+        <entry key="app/src/main/res/layout/activity_image_display.xml" value="0.12409420289855072" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.13316650390625007" />
         <entry key="app/src/main/res/layout/layout_contact_detail.xml" value="0.1085934159897392" />
         <entry key="app/src/main/res/layout/layout_contacts_rv_item.xml" value="0.4559117908441174" />
         <entry key="app/src/main/res/layout/layout_create_new_contact.xml" value="0.13229166666666667" />
-        <entry key="app/src/main/res/menu/search_menu.xml" value="0.13125" />=
+        <entry key="app/src/main/res/menu/search_menu.xml" value="0.13125" />
       </map>
     </option>
   </component>
