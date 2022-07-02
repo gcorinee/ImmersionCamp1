@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 public class ContactsModal implements Parcelable {
     private String contactId;
@@ -24,6 +25,7 @@ public class ContactsModal implements Parcelable {
         this.photoUri = photoUri;
     }
     public String getContactId() { return contactId; }
+    public void setContactId(String contactId) { this.contactId = contactId; }
     public String getUserName() {
         return userName;
     }
@@ -44,14 +46,15 @@ public class ContactsModal implements Parcelable {
     public void setPhotoUri(Uri photoUri) { this.photoUri = photoUri; }
 
     public ContactsModal(Parcel in) {
-        String[] data = new String[5];
+        String[] data = new String[6];
 
         in.readStringArray(data);
-        this.userName = data[0];
-        this.phoneNumber = data[1];
-        this.organization = data[2];
-        this.email = data[3];
-        this.photoUri = Uri.parse(data[4]);
+        this.contactId = data[0];
+        this.userName = data[1];
+        this.phoneNumber = data[2];
+        this.organization = data[3];
+        this.email = data[4];
+        this.photoUri = Uri.parse(data[5]);
     }
 
     @Override
@@ -62,6 +65,7 @@ public class ContactsModal implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         String[] data = new String[] {
+                this.contactId,
                 this.userName,
                 this.phoneNumber,
                 this.organization,
