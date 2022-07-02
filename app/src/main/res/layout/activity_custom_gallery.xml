@@ -33,19 +33,6 @@
                 android:textStyle="bold" />
 
 
-            <ImageButton
-                android:id="@+id/menu"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="end"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
-                android:background="@android:color/transparent"
-                android:minWidth="48dp"
-                android:src="@drawable/ic_action_menu"
-                app:tint="@color/white" />
-
-
         </androidx.cardview.widget.CardView>
 
         <com.example.immersioncamp1.utils.AutoFitRecyclerView
@@ -74,6 +61,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="@string/empty"
+        android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold"
         android:visibility="gone" />

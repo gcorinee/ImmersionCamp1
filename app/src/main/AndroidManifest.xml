@@ -2,11 +2,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.immersioncamp1">
 
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.WRITE_SMS" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:required="true" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -18,6 +24,8 @@
         <activity
             android:name=".ContactDetailActivity"
             android:exported="false" />
+        <activity android:name=".CustomGalleryActivity" />
+        <activity android:name=".ImageDisplayActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -26,12 +34,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".utils.CustomGalleryActivity">
-
-        </activity>
-        <activity android:name=".ImageDisplay">
-
         </activity>
     </application>
 

@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.transition.Fade;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -25,17 +26,20 @@ import java.util.ArrayList;
 /**
  * Author CodeBoy722
  * <p>
- * This Activity get a path to a folder that contains images from the MainActivity Intent and displays
+ * This Activity get a path to a folder that contains images from the CustomGalleryActivity Intent and displays
  * all the images in the folder inside a RecyclerView
  */
 
-public class ImageDisplay extends AppCompatActivity implements ItemClickListener {
+public class ImageDisplayActivity extends AppCompatActivity implements ItemClickListener {
+
+    private final String TAG = "+ImageDisplayActivity";
 
     RecyclerView imageRecycler;
     ArrayList<PictureFacer> allPictures;
     ProgressBar load;
     String folderPath;
     TextView folderName;
+//    String imgPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +60,7 @@ public class ImageDisplay extends AppCompatActivity implements ItemClickListener
         if (allPictures.isEmpty()) {
             load.setVisibility(View.VISIBLE);
             allPictures = getAllImagesByFolder(folderPath);
-            imageRecycler.setAdapter(new PictureAdapter(allPictures, ImageDisplay.this, this));
+            imageRecycler.setAdapter(new PictureAdapter(allPictures, ImageDisplayActivity.this, this));
             load.setVisibility(View.GONE);
         } else {
 
@@ -70,7 +74,12 @@ public class ImageDisplay extends AppCompatActivity implements ItemClickListener
      */
     @Override
     public void onPicClicked(PicHolder holder, int position, ArrayList<PictureFacer> pics) {
-        PictureBrowserFragment browser = PictureBrowserFragment.newInstance(pics, position, ImageDisplay.this);
+        PictureBrowserFragment browser = PictureBrowserFragment.newInstance(pics, position, ImageDisplayActivity.this);
+
+//        Bundle args = new Bundle();
+//        args.putString("SENDER_KEY", null);
+//        args.putString("PATH_KEY", null);
+//        browser.setArguments(args);
 
         // Note that we need the API version check here because the actual transition classes (e.g. Fade)
         // are not in the support library and are only available in API 21+. The methods we are calling on the Fragment
@@ -89,7 +98,6 @@ public class ImageDisplay extends AppCompatActivity implements ItemClickListener
                 .add(R.id.displayContainer, browser)
                 .addToBackStack(null)
                 .commit();
-
     }
 
     @Override
@@ -108,7 +116,7 @@ public class ImageDisplay extends AppCompatActivity implements ItemClickListener
         Uri allVideosUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
         String[] projection = {MediaStore.Images.ImageColumns.DATA, MediaStore.Images.Media.DISPLAY_NAME,
                 MediaStore.Images.Media.SIZE};
-        Cursor cursor = ImageDisplay.this.getContentResolver().query(allVideosUri, projection, MediaStore.Images.Media.DATA + " like ? ", new String[]{"%" + path + "%"}, null);
+        Cursor cursor = ImageDisplayActivity.this.getContentResolver().query(allVideosUri, projection, MediaStore.Images.Media.DATA + " like ? ", new String[]{"%" + path + "%"}, null);
         try {
             cursor.moveToFirst();
             do {
@@ -134,5 +142,24 @@ public class ImageDisplay extends AppCompatActivity implements ItemClickListener
         return images;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+        Log.e(TAG, "onResume");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.e(TAG, "onRestart");
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (ContactDetailActivity.imgPathViewModel.getImgPath() != null) {
+            finish();
+        }
+    }
 }
