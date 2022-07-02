@@ -2,24 +2,83 @@
 
 package com.example.immersioncamp1;
 
-public class ContactsModal {
-    private String userName;
-    private String contactNumber;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-    public ContactsModal (String userName, String contactNumber) {
+public class ContactsModal implements Parcelable {
+    private String contactId;
+    private String userName;
+    private String phoneNumber;
+    private String organization;
+    private String email;
+    private Uri photoUri;
+
+    public ContactsModal (String contactId, String userName, String phoneNumber, String organization, String email, Uri photoUri) {
+        this.contactId = contactId;
         this.userName = userName;
-        this.contactNumber = contactNumber;
+        this.phoneNumber = phoneNumber;
+        this.organization = organization;
+        this.email = email;
+        this.photoUri = photoUri;
     }
+    public String getContactId() { return contactId; }
     public String getUserName() {
         return userName;
     }
     public void setUserName(String userName) {
         this.userName = userName;
     }
-    public String getContactNumber() {
-        return contactNumber;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
-    public void setContactNumber(String contactNumber) {
-        this.contactNumber = contactNumber;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
+    public String getOrganization() { return organization; }
+    public void setOrganization(String organization) { this.organization = organization; }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    public Uri getPhotoUri() { return photoUri; }
+    public void setPhotoUri(Uri photoUri) { this.photoUri = photoUri; }
+
+    public ContactsModal(Parcel in) {
+        String[] data = new String[5];
+
+        in.readStringArray(data);
+        this.userName = data[0];
+        this.phoneNumber = data[1];
+        this.organization = data[2];
+        this.email = data[3];
+        this.photoUri = Uri.parse(data[4]);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        String[] data = new String[] {
+                this.userName,
+                this.phoneNumber,
+                this.organization,
+                this.email,
+                this.photoUri.toString()
+        };
+        dest.writeStringArray(data);
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public ContactsModal createFromParcel(Parcel in) {
+            return new ContactsModal(in);
+        }
+        public ContactsModal[] newArray(int size) {
+            return new ContactsModal[size];
+        }
+    };
 }
+
+

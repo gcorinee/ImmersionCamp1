@@ -2,31 +2,30 @@ package com.example.immersioncamp1;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
+import android.content.ContentResolver;
+import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -35,9 +34,9 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.PermissionRequestErrorListener;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -62,53 +61,6 @@ public class MainActivity extends AppCompatActivity {
 
         // calling a method to request permissions.
         requestPermissions();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // in this on create options menu we are calling
-        // a menu inflater and inflating our menu file.
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.search_menu, menu);
-        // on below line we are getting our menu item as search view item
-        MenuItem searchViewItem = menu.findItem(R.id.app_bar_search);
-        // on below line we are creating a variable for our search view.
-        final SearchView searchView = (SearchView) searchViewItem.getActionView();
-        // on below line we are setting on query text listener for our search view.
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                // on query submit we are clearing the focus for our search view.
-                searchView.clearFocus();
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                // on changing the text in our search view we are calling
-                // a filter method to filter our array list
-                filter(newText.toLowerCase());
-                return false;
-            }
-        });
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    private void filter(String text) {
-        // in this method we are filtering our array list.
-        // on below line we are creating a new filtered list.
-        ArrayList<ContactsModal> filteredlist = new ArrayList<>();
-        // on below line we are running a loop for checking if the item is present in array list.
-        for (ContactsModal item : contactsModalArrayList) {
-            if (item.getUserName().toLowerCase().contains(text.toLowerCase())) {
-                filteredlist.add(item);
-            }
-        }
-        if (filteredlist.isEmpty()) {
-            Toast.makeText(this, "No Contact Found", Toast.LENGTH_SHORT).show();
-        } else {
-            contactRVAdapter.filterList(filteredlist);
-        }
     }
 
     private void prepareContactRV() {
@@ -208,11 +160,63 @@ public class MainActivity extends AppCompatActivity {
         builder.show();
     }
 
+    private String getRawContactId(String contactId) {
+        String[] projection = new String[]{ContactsContract.RawContacts._ID};
+        String selection = ContactsContract.RawContacts.CONTACT_ID + "=?";
+        String[] selectionArgs = new String[]{contactId};
+        Cursor c = getContentResolver().query(ContactsContract.RawContacts.CONTENT_URI, projection, selection, selectionArgs, null);
+        if (c == null) return null;
+        int rawContactId = -1;
+        if (c.moveToFirst()) {
+            rawContactId = c.getInt(c.getColumnIndexOrThrow(ContactsContract.RawContacts._ID));
+        }
+        c.close();
+        return String.valueOf(rawContactId);
+
+    }
+
+    private String getCompanyName(String rawContactId) {
+        try {
+            String orgWhere = ContactsContract.Data.RAW_CONTACT_ID + " = ? AND " + ContactsContract.Data.MIMETYPE + " = ?";
+            String[] orgWhereParams = new String[]{rawContactId,
+                    ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE};
+            Cursor cursor = getContentResolver().query(ContactsContract.Data.CONTENT_URI,
+                    null, orgWhere, orgWhereParams, null);
+            if (cursor == null) return "";
+            String name = null;
+            if (cursor.moveToFirst()) {
+                name = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Organization.COMPANY));
+            }
+            cursor.close();
+            return name;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    public Uri getPhotoUri(String contactId) {
+        Uri contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long.parseLong(contactId));
+        return contactUri;
+    }
+
+    public static Bitmap getPhoto(Context context, Uri uri) {
+        ContentResolver cr = context.getContentResolver();
+        try {
+            InputStream photo_stream = ContactsContract.Contacts.openContactPhotoInputStream(cr, uri, true);
+            Bitmap bitmap = BitmapFactory.decodeStream(photo_stream);
+            return bitmap;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     @SuppressLint("NotifyDataSetChanged")
     private void getContacts() {
         // this method is use to read contact from users device.
         // on below line we are creating a string variables for
         // our contact id and display name.
+        contactsModalArrayList.clear();
         String contactId = "";
         String displayName = "";
         // on below line we are calling our content resolver for getting contacts
@@ -222,13 +226,17 @@ public class MainActivity extends AppCompatActivity {
             // if the count if greater than 0 then we are running a loop to move our cursor to next.
             while (cursor.moveToNext()) {
                 // on below line we are getting the phone number.
+                    contactId = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts._ID));
                     int hasPhoneNumber = cursor.getColumnIndexOrThrow(ContactsContract.Contacts.HAS_PHONE_NUMBER);
                     if (hasPhoneNumber > 0) {
                         // we are checking if the hasPhoneNumber is > 0
                         // on below line we are getting our contact id and user name for that contact
-                        contactId = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts._ID));
                         displayName = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME));
                         // on below line we are calling a content solver and making a query
+                        String phoneNumber = "";
+                        String organization = "";
+                        String email = "";
+                        Uri photoUri = null;
                         Cursor phoneCursor = getContentResolver().query(
                                 ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                                 null,
@@ -238,11 +246,27 @@ public class MainActivity extends AppCompatActivity {
                         // on below line we are moving our cursor to next position.
                         if (phoneCursor.moveToNext()) {
                             // on below line we are getting the phone number for our users and then adding the name along with phone number in array list.
-                            String phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                            contactsModalArrayList.add(new ContactsModal(displayName, phoneNumber));
+                            phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER));
                         }
+
+                        String rawContactId = getRawContactId(contactId);
+                        organization = getCompanyName(rawContactId);
+
+                        Cursor emailCursor = getContentResolver().query(
+                                ContactsContract.CommonDataKinds.Email.CONTENT_URI, null,
+                                ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?",
+                                new String[]{contactId}, null);
+                        while (emailCursor.moveToNext()) {
+                            //to get the contact names
+                            email = emailCursor.getString(emailCursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Email.DATA));
+                        }
+
+                        photoUri = getPhotoUri(contactId);
+
+                        contactsModalArrayList.add(new ContactsModal(contactId, displayName, phoneNumber, organization, email, photoUri));
                         // on below line we are closing our phone cursor.
                         phoneCursor.close();
+                        emailCursor.close();
                 }
             }
         }
@@ -253,5 +277,9 @@ public class MainActivity extends AppCompatActivity {
         contactRVAdapter.notifyDataSetChanged();
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getContacts();
+    }
 }
