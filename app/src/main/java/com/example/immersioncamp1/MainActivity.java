@@ -208,10 +208,37 @@ public class MainActivity extends AppCompatActivity {
         try {
             InputStream photo_stream = ContactsContract.Contacts.openContactPhotoInputStream(cr, uri, true);
             Bitmap bitmap = BitmapFactory.decodeStream(photo_stream);
-            return bitmap;
+            Log.e(null, "size is:" + uri.toString());
+            return cropBitmap(bitmap);
         } catch (Exception e) {
+            Log.e(null, "ppp: " + e);
             return null;
         }
+    }
+
+    private static Bitmap cropBitmap(Bitmap srcBmp) {
+        Bitmap dstBmp;
+        if (srcBmp.getWidth() >= srcBmp.getHeight()){
+
+            dstBmp = Bitmap.createBitmap(
+                    srcBmp,
+                    srcBmp.getWidth()/2 - srcBmp.getHeight()/2,
+                    0,
+                    srcBmp.getHeight(),
+                    srcBmp.getHeight()
+            );
+
+        }else{
+
+            dstBmp = Bitmap.createBitmap(
+                    srcBmp,
+                    0,
+                    srcBmp.getHeight()/2 - srcBmp.getWidth()/2,
+                    srcBmp.getWidth(),
+                    srcBmp.getWidth()
+            );
+        }
+        return dstBmp;
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -308,5 +335,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Log.e(null, "55glmgl");
     }
 }

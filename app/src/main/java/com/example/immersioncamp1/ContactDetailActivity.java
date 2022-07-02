@@ -32,6 +32,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.concurrent.TimeUnit;
 
 public class ContactDetailActivity extends AppCompatActivity {
 
@@ -155,8 +156,8 @@ public class ContactDetailActivity extends AppCompatActivity {
             Log.e(null, "thisis: " + contactId);
             MainActivity.setPhotoByContactId(this, contactId, newPhoto);
             Log.e(TAG, "kvcvmvv");
-            modal.setPhotoUri(imageUri);
             Log.e(TAG, "z,mzmmzz");
+            try { TimeUnit.MILLISECONDS.sleep(100); } catch (Exception e) { return; }
             setView();
         } else {
             Log.e(TAG, "imgPath is null");
