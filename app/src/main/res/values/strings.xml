@@ -4,4 +4,10 @@
     <string name="phone_number">Phone Number</string>
     <string name="organization">Organization</string>
     <string name="search">Search</string>
+
+    <string name="folderName">Folder Name</string>
+    <string name="appName">Simple Image Gallery</string>
+    <string name="empty">No Images on this device</string>
+
+    <string name="photos_name">Photos.</string>
 </resources>

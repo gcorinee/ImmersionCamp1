@@ -16,10 +16,15 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
+
+import com.example.immersioncamp1.utils.ImgPathViewModel;
 
 import com.jgabrielfreitas.core.BlurImageView;
 
@@ -36,6 +41,10 @@ public class ContactDetailActivity extends AppCompatActivity {
     private LinearLayout topBar;
     private CardView callCV, messageCV;
     private BlurImageView backgroundIV;
+
+    public static ImgPathViewModel imgPathViewModel;
+
+    private final String TAG = "+ContactDetailActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +112,15 @@ public class ContactDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
+            }
+        });
+
+        // on below line adding on click listener for custom gallery.
+        contactIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), CustomGalleryActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -174,5 +192,24 @@ public class ContactDetailActivity extends AppCompatActivity {
 //    USE THIS TO UPDATE PHOTO !!!
     private Uri getImageUriFromGallery(){
         return null;
+    }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        imgPathViewModel = new ViewModelProvider(this).get(ImgPathViewModel.class);
+        Log.e(TAG, "onResume");
+        if (imgPathViewModel.getImgPath() != null) {
+            Log.e(TAG, imgPathViewModel.getImgPath());
+        } else {
+            Log.e(TAG, "imgPath is null");
+        }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.e(TAG, "onRestart");
     }
 }
