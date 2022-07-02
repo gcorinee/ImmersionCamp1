@@ -34,6 +34,7 @@ import com.example.immersioncamp1.utils.PictureFacer;
 import com.example.immersioncamp1.utils.RecyclerViewPagerImageIndicator;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+//import com.google.android.gms.fido.fido2.api.common.RequestOptions;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
