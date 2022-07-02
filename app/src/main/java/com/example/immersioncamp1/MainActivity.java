@@ -216,6 +216,7 @@ public class MainActivity extends AppCompatActivity {
         // this method is use to read contact from users device.
         // on below line we are creating a string variables for
         // our contact id and display name.
+        contactsModalArrayList.clear();
         String contactId = "";
         String displayName = "";
         // on below line we are calling our content resolver for getting contacts
@@ -274,5 +275,11 @@ public class MainActivity extends AppCompatActivity {
         // on below line we are hiding our progress bar and notifying our adapter class.
         loadingPB.setVisibility(View.GONE);
         contactRVAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getContacts();
     }
 }
