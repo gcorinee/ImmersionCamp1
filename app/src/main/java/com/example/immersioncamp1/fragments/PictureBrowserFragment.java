@@ -86,7 +86,7 @@ public class PictureBrowserFragment extends Fragment implements ImageIndicatorLi
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ContactDetailActivity.imgPathViewModel.setImgPath(null);
+        ContactDetailActivity.getImgPathViewModel().setImgPath(null);
 
         /**
          * 이미지 경로
@@ -95,9 +95,9 @@ public class PictureBrowserFragment extends Fragment implements ImageIndicatorLi
         selectImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ContactDetailActivity.imgPathViewModel.setImgPath(allImages.get(position).getPicturePath());
+                ContactDetailActivity.getImgPathViewModel().setImgPath(allImages.get(position).getPicturePath());
 
-                Log.e(TAG, ContactDetailActivity.imgPathViewModel.getImgPath());
+                Log.e(TAG, ContactDetailActivity.getImgPathViewModel().getImgPath());
                 getActivity().onBackPressed();
             }
         });

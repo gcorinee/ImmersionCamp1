@@ -36,6 +36,8 @@ import java.util.concurrent.TimeUnit;
 
 public class ContactDetailActivity extends AppCompatActivity {
 
+    private final String TAG = "+ContactDetailActivity";
+
     // creating variables for our image view and text view and string.
     private ContactsModal modal;
     private String contactId, name, phoneNumber, organization, email;
@@ -44,10 +46,7 @@ public class ContactDetailActivity extends AppCompatActivity {
     private LinearLayout topBar;
     private CardView callCV, messageCV;
     private BlurImageView backgroundIV;
-
-    public static ImgPathViewModel imgPathViewModel;
-
-    private final String TAG = "+ContactDetailActivity";
+    private static ImgPathViewModel imgPathViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -190,4 +189,14 @@ public class ContactDetailActivity extends AppCompatActivity {
         backgroundIV.setImageBitmap(bitmap);
         backgroundIV.setBlur(2);
     }
+
+
+    public static ImgPathViewModel getImgPathViewModel() {
+        return imgPathViewModel;
+    }
+
+    public static void setImgPathViewModel(ImgPathViewModel imgPathViewModel) {
+        ContactDetailActivity.imgPathViewModel = imgPathViewModel;
+    }
+
 }
