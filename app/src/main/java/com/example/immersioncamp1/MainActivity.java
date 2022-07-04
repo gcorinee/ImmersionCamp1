@@ -360,6 +360,7 @@ public class MainActivity extends AppCompatActivity {
         }
         // on below line we are closing our cursor.
         cursor.close();
+        contactsModalArrayList.add(null);
         // on below line we are hiding our progress bar and notifying our adapter class.
         loadingPB.setVisibility(View.GONE);
         contactRVAdapter.notifyDataSetChanged();
