@@ -55,6 +55,11 @@ public class ContactRVAdapter extends RecyclerView.Adapter<ContactRVAdapter.View
     public void onBindViewHolder(@NonNull ContactRVAdapter.ViewHolder holder, int position) {
         // getting data from array list in our modal.
         ContactsModal modal = contactsModalArrayList.get(position);
+        if (modal == null) {
+            holder.itemView.setVisibility(View.GONE);
+            return;
+        }
+        holder.itemView.setVisibility(View.VISIBLE);
         // on below line we are setting data to our text view.
         holder.contactTV.setText(modal.getUserName());
         holder.contactDetailTV.setText(modal.getOrganization());

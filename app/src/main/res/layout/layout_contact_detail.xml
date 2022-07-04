@@ -71,8 +71,8 @@
             android:src="@drawable/ic_launcher_background" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
-        android:id="@+id/idTVName"
+    <EditText
+        android:id="@+id/idETName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/imageTab"
@@ -80,17 +80,19 @@
         android:layout_marginEnd="25dp"
         android:background="@drawable/border_bottom"
         android:padding="30dp"
+        android:singleLine="true"
         android:text="Name"
         android:textAlignment="center"
         android:textColor="@color/gray_3"
         android:textSize="30dp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:imeOptions="actionDone"/>
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/idTVName"
+        android:layout_below="@id/idETName"
         android:orientation="vertical"
         android:layout_marginStart="25dp"
         android:layout_marginEnd="25dp"
@@ -107,13 +109,17 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_org"
                 android:paddingRight="10dp"/>
-            <TextView
-                android:id="@+id/idTVOrganization"
+            <EditText
+                android:id="@+id/idETOrganization"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:text="Organization"
-                android:textColor="@color/gray_3"/>
+                android:textColor="@color/gray_3"
+                android:background="@android:color/transparent"
+                android:textSize="15dp"
+                android:imeOptions="actionDone"
+                android:singleLine="true"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -125,13 +131,18 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_phone"
                 android:paddingRight="10dp"/>
-            <TextView
-                android:id="@+id/idTVPhone"
+            <EditText
+                android:id="@+id/idETPhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:text="Phone"
-                android:textColor="@color/gray_3"/>
+                android:textColor="@color/gray_3"
+                android:background="@android:color/transparent"
+                android:textSize="15dp"
+                android:inputType="phone"
+                android:imeOptions="actionDone"
+                android:singleLine="true"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -144,13 +155,17 @@
                 android:src="@drawable/ic_email"
                 android:paddingTop="3dp"
                 android:paddingRight="10dp"/>
-            <TextView
-                android:id="@+id/idTVEmail"
+            <EditText
+                android:id="@+id/idETEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:text="Email"
-                android:textColor="@color/gray_3"/>
+                android:textColor="@color/gray_3"
+                android:background="@android:color/transparent"
+                android:textSize="15dp"
+                android:imeOptions="actionDone"
+                android:singleLine="true"/>
         </LinearLayout>
 
     </LinearLayout>
