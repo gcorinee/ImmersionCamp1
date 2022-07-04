@@ -6,11 +6,18 @@
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.149" />
         <entry key="app/src/main/res/drawable/back.xml" value="0.148" />
         <entry key="app/src/main/res/drawable/border_bottom.xml" value="0.1425" />
+        <entry key="app/src/main/res/drawable/gradient_background.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_email.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1425" />
+        <entry key="app/src/main/res/drawable/ic_main_background.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_message.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_org.xml" value="0.1425" />
         <entry key="app/src/main/res/drawable/round_outline.xml" value="0.148" />
+        <entry key="app/src/main/res/drawable/round_outline_large.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/weather_image_shape.xml" value="0.115" />
         <entry key="app/src/main/res/drawable/widget_shape.xml" value="0.159" />
         <entry key="app/src/main/res/layout/activity_create_new_contact.xml" value="0.13229166666666667" />
+        <entry key="app/src/main/res/layout/activity_image_display.xml" value="0.1046875" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.13316650390625007" />
         <entry key="app/src/main/res/layout/item_weather.xml" value="0.21041666666666667" />
         <entry key="app/src/main/res/layout/item_weather_widget.xml" value="0.21041666666666667" />
