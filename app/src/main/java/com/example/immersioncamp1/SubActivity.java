@@ -2,8 +2,11 @@ package com.example.immersioncamp1;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,10 +25,15 @@ public class SubActivity extends AppCompatActivity {
         ListView listView2 = findViewById(R.id.weather_listView);
         listView2.setAdapter(adapter);
 
-        Button imageButton2 = (Button) findViewById(R.id.btn2);
-        imageButton2.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
+        // 클릭 이벤트
+
+        listView2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Weather item = (((MainActivity) MainActivity.mContext).data).get(position);
+                Toast.makeText(getApplicationContext(),
+                        "온도: " +item.getTemp() + " " + "습도: "+item.getHumidity(),Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
