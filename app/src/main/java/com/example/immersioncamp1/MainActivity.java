@@ -45,7 +45,49 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+// HHJ
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import java.util.ArrayList;
+
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import androidx.core.app.ActivityCompat;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
+
+import org.json.JSONException;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+/// HHJ
+
+
 public class MainActivity extends AppCompatActivity {
+
+    ///HHJ
+    String[][] hold = new String[7][2];
+    public int TO_GRID = 0;
+    String latitude, longitude;
+    final ArrayList<Weather> data = new ArrayList<>();
+    String finalBase_time;
+    String finalDate;
+    public static Context mContext;
+    static final int PERMISSIONS_REQUEST = 0x0000001;
+    ///HHJ
 
     // creating variables for our array lust, recycler view progress bar and adapter.
     private ArrayList<ContactsModal> contactsModalArrayList;
@@ -58,6 +100,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mContext = this;
+
         // on below line we are initializing our variables.
         contactsModalArrayList = new ArrayList<>();
         contactRV = findViewById(R.id.idRVContacts);
@@ -65,9 +109,21 @@ public class MainActivity extends AppCompatActivity {
 
         // calling method to prepare our recycler view.
         prepareContactRV();
-
         // calling a method to request permissions.
         requestPermissions();
+
+
+        widget();
+        // widget click event
+        ListView listView = findViewById(R.id.weather_widget);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getApplicationContext(), SubActivity.class); // SubActivity 호출
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void prepareContactRV() {
@@ -321,5 +377,276 @@ public class MainActivity extends AppCompatActivity {
 //        getContacts();
         requestPermissions();
     }
+    
+    public static void setPhotoByContactId(Context context, String contactId, Bitmap bmp) {
+        Log.e(null, "HELLODDKJDNJ");
+        long rawContactId = getRawContactId(context, contactId);
+        Log.e(null, "22HELLODDKJDNJ");
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        Log.e(null, "33HELLODDKJDNJ");
+        bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        Log.e(null, "44HELLODDKJDNJ");
+        byte[] byteArray = stream.toByteArray();
+        Uri pictureUri = Uri.withAppendedPath(ContentUris.withAppendedId(ContactsContract.RawContacts.CONTENT_URI,
+                rawContactId), ContactsContract.RawContacts.DisplayPhoto.CONTENT_DIRECTORY);
+        try {
+            AssetFileDescriptor afd = context.getContentResolver().openAssetFileDescriptor(pictureUri, "rw");
+            OutputStream os = afd.createOutputStream();
+            os.write(byteArray);
+            os.close();
+            afd.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Log.e(null, "55glmgl");
+    }
 
+    public void widget() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // 권한 있는지 확인 -> 하나라도 없으면 아래 실행
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                // 이전에 권한 요청을 거부한 경우 실행
+                Toast.makeText(this, "앱 실행을 위해서는 권한을 설정해야 합니다", Toast.LENGTH_LONG).show();
+                System.out.println("###권한 요청1");
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSIONS_REQUEST);
+            } else {
+                System.out.println("###권한 요청2");
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSIONS_REQUEST);
+            }
+        }
+        else{
+            weather_window();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "앱 실행을 위한 권한이 설정 되었습니다", Toast.LENGTH_LONG).show();
+                    weather_window();
+                } else {
+                    Toast.makeText(this, "권한이 허용되지 않아 실행 불가", Toast.LENGTH_LONG).show();
+                    moveTaskToBack(true); // 태스크를 백그라운드로 이동
+                    finishAndRemoveTask(); // 액티비티 종료 + 태스크 리스트에서 지우기
+                    System.exit(0);
+                }
+                break;
+        }
+    }
+
+
+    public void weather_window() {
+
+        System.out.println("###weather window 실행");
+        FusedLocationProviderClient fusedLocationClient;
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this,"권한이 허용되지 않아 fusedLocation 실행 불가",Toast.LENGTH_LONG).show();
+            return;
+        }
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        System.out.println("###onSuccess");
+                        if (location != null) {
+                            MainActivity.LatXLngY tmp = convertGRID_GPS(TO_GRID, location.getLatitude(), location.getLongitude());
+                            latitude = Integer.toString((int) tmp.x);
+                            longitude = Integer.toString((int) tmp.y);
+                        } else {
+                            System.out.println("### location is null");
+                        }
+                        Callback();
+                    }
+                });
+    }
+
+    public void Callback() {
+        if(latitude==null || longitude==null){
+            Toast.makeText(this,"위치 정보 가져오기 실패",Toast.LENGTH_LONG).show();
+        }
+        System.out.println("###Callback");
+
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat _date = new SimpleDateFormat("yyyyMMdd");
+        String date = _date.format(calendar.getTime());
+        SimpleDateFormat _time = new SimpleDateFormat("HHmm");
+        String time = _time.format(calendar.getTime());
+        String base_time = "0200";
+
+        // basetime 조정
+        if (time.compareTo("0000") >= 0 && time.compareTo("0211") < 0) {
+            date = Integer.toString(Integer.parseInt(date) - 1);
+            base_time = "2300";
+        } else if (time.compareTo("0211") >= 0 && time.compareTo("0511") < 0) {
+            base_time = "0200";
+        } else if (time.compareTo("0511") >= 0 && time.compareTo("0811") < 0) {
+            base_time = "0500";
+        } else if (time.compareTo("0811") >= 0 && time.compareTo("1111") < 0) {
+            base_time = "0800";
+        } else if (time.compareTo("1111") >= 0 && time.compareTo("1411") < 0) {
+            base_time = "1100";
+        } else if (time.compareTo("1411") >= 0 && time.compareTo("1711") < 0) {
+            base_time = "1400";
+        } else if (time.compareTo("1711") >= 0 && time.compareTo("2011") < 0) {
+            base_time = "1700";
+        } else if (time.compareTo("2011") >= 0 && time.compareTo("2311") < 0) {
+            base_time = "2000";
+        } else {
+            base_time = "2300";
+        }
+
+        finalBase_time = base_time;
+        finalDate = date;
+        System.out.println("### Final DATE: " + finalDate);
+        System.out.println("### Final TIME: " + finalBase_time);
+
+        fill_data();
+        System.out.println("###FINAL DATA:" + data);
+
+        widgetAdapter adapter = new widgetAdapter(data);
+        ListView listView = findViewById(R.id.weather_widget);
+        listView.setAdapter(adapter);
+    }
+
+
+        /* 리스트뷰 클릭 이벤트
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Weather item = data.get(position);
+                Toast.makeText(getApplicationContext(),
+                        item.getCity()+ " " +item.getTemp()+"도" ,Toast.LENGTH_SHORT).show();
+            }
+        });
+        */
+
+    public void fill_data(){ // hold 하나만 쓰는걸로 줄이기
+
+        WeatherData weatherdata = new WeatherData();
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("###Tread 시작");
+                try {
+                    hold[0] = weatherdata.getWeather(latitude,longitude, finalDate, finalBase_time,"json"); // 현재위치
+                    data.add(new Weather("현재 위치", hold[0][0]+"℃", hold[0][1]));
+                    hold[1] = weatherdata.getWeather("60","127", finalDate,finalBase_time,"json"); // 서울
+                    data.add(new Weather("서울", hold[1][0]+"℃", hold[1][1]));
+                    hold[2] = weatherdata.getWeather("98","76", finalDate,finalBase_time,"json"); // 부산
+                    data.add(new Weather("부산", hold[2][0]+"℃", hold[2][1]));
+                    hold[3] = weatherdata.getWeather("89","90",finalDate,finalBase_time,"json"); // 대구
+                    data.add(new Weather("대구", hold[3][0]+"℃", hold[3][1]));
+                    hold[4] = weatherdata.getWeather("55","124",finalDate,finalBase_time,"json"); // 인천
+                    data.add(new Weather("인천", hold[4][0]+"℃", hold[4][1]));
+                    hold[5] = weatherdata.getWeather("58","74",finalDate,finalBase_time,"json"); // 광주
+                    data.add(new Weather("광주", hold[5][0]+"℃", hold[5][1]));
+                    hold[6] = weatherdata.getWeather("53","38",finalDate,finalBase_time,"json"); // 제주
+                    data.add(new Weather("제주", hold[6][0]+"℃", hold[6][1]));
+                } catch (IOException e) {
+                    System.out.println("IOE에러   " + e);
+                } catch (JSONException e) {
+                    System.out.println("JSON에러  " + e);
+                }
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+            System.out.println("###Tread 끝 ");
+        }catch (InterruptedException e){
+            System.out.println("###동기화log");
+        }
+    }
+
+    private LatXLngY convertGRID_GPS(int mode, double lat_X, double lng_Y )
+    {
+        double RE = 6371.00877; // 지구 반경(km)
+        double GRID = 5.0; // 격자 간격(km)
+        double SLAT1 = 30.0; // 투영 위도1(degree)
+        double SLAT2 = 60.0; // 투영 위도2(degree)
+        double OLON = 126.0; // 기준점 경도(degree)
+        double OLAT = 38.0; // 기준점 위도(degree)
+        double XO = 43; // 기준점 X좌표(GRID)
+        double YO = 136; // 기1준점 Y좌표(GRID)
+
+        //
+        // LCC DFS 좌표변환 ( code : "TO_GRID"(위경도->좌표, lat_X:위도,  lng_Y:경도), "TO_GPS"(좌표->위경도,  lat_X:x, lng_Y:y) )
+        //
+
+
+        double DEGRAD = Math.PI / 180.0;
+        double RADDEG = 180.0 / Math.PI;
+
+        double re = RE / GRID;
+        double slat1 = SLAT1 * DEGRAD;
+        double slat2 = SLAT2 * DEGRAD;
+        double olon = OLON * DEGRAD;
+        double olat = OLAT * DEGRAD;
+
+        double sn = Math.tan(Math.PI * 0.25 + slat2 * 0.5) / Math.tan(Math.PI * 0.25 + slat1 * 0.5);
+        sn = Math.log(Math.cos(slat1) / Math.cos(slat2)) / Math.log(sn);
+        double sf = Math.tan(Math.PI * 0.25 + slat1 * 0.5);
+        sf = Math.pow(sf, sn) * Math.cos(slat1) / sn;
+        double ro = Math.tan(Math.PI * 0.25 + olat * 0.5);
+        ro = re * sf / Math.pow(ro, sn);
+        MainActivity.LatXLngY rs = new MainActivity.LatXLngY();
+
+        if (mode == TO_GRID) {
+            rs.lat = lat_X;
+            rs.lng = lng_Y;
+            double ra = Math.tan(Math.PI * 0.25 + (lat_X) * DEGRAD * 0.5);
+            ra = re * sf / Math.pow(ra, sn);
+            double theta = lng_Y * DEGRAD - olon;
+            if (theta > Math.PI) theta -= 2.0 * Math.PI;
+            if (theta < -Math.PI) theta += 2.0 * Math.PI;
+            theta *= sn;
+            rs.x = Math.floor(ra * Math.sin(theta) + XO + 0.5);
+            rs.y = Math.floor(ro - ra * Math.cos(theta) + YO + 0.5);
+        }
+        else {
+            rs.x = lat_X;
+            rs.y = lng_Y;
+            double xn = lat_X - XO;
+            double yn = ro - lng_Y + YO;
+            double ra = Math.sqrt(xn * xn + yn * yn);
+            if (sn < 0.0) {
+                ra = -ra;
+            }
+            double alat = Math.pow((re * sf / ra), (1.0 / sn));
+            alat = 2.0 * Math.atan(alat) - Math.PI * 0.5;
+
+            double theta = 0.0;
+            if (Math.abs(xn) <= 0.0) {
+                theta = 0.0;
+            }
+            else {
+                if (Math.abs(yn) <= 0.0) {
+                    theta = Math.PI * 0.5;
+                    if (xn < 0.0) {
+                        theta = -theta;
+                    }
+                }
+                else theta = Math.atan2(xn, yn);
+            }
+            double alon = theta / sn + olon;
+            rs.lat = alat * RADDEG;
+            rs.lng = alon * RADDEG;
+        }
+        return rs;
+    }
+class LatXLngY
+{
+    public double lat;
+    public double lng;
+
+    public double x;
+    public double y;
+}
 }
