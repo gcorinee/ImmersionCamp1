@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
                         // this method is called when all permissions are granted
                         if (multiplePermissionsReport.areAllPermissionsGranted()) {
                             getContacts();
-                            Toast.makeText(MainActivity.this, "All the permissions are granted..", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(MainActivity.this, "All the permissions are granted..", Toast.LENGTH_SHORT).show();
                         }
                         // check for permanent denial of any permission
                         if (multiplePermissionsReport.isAnyPermissionPermanentlyDenied()) {
@@ -223,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
         builder.show();
     }
 
-    private static long getRawContactId(Context context, String contactId) {
+    public static long getRawContactId(Context context, String contactId) {
         String[] projection = new String[]{ContactsContract.RawContacts._ID};
         String selection = ContactsContract.RawContacts.CONTACT_ID + "=?";
         String[] selectionArgs = new String[]{contactId};
@@ -264,6 +264,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static Bitmap getPhoto(Context context, Uri uri) {
+        Log.e(null, "getPhoto started");
         ContentResolver cr = context.getContentResolver();
         try {
             InputStream photo_stream = ContactsContract.Contacts.openContactPhotoInputStream(cr, uri, true);
@@ -279,7 +280,6 @@ public class MainActivity extends AppCompatActivity {
     private static Bitmap cropBitmap(Bitmap srcBmp) {
         Bitmap dstBmp;
         if (srcBmp.getWidth() >= srcBmp.getHeight()){
-
             dstBmp = Bitmap.createBitmap(
                     srcBmp,
                     srcBmp.getWidth()/2 - srcBmp.getHeight()/2,
@@ -287,9 +287,7 @@ public class MainActivity extends AppCompatActivity {
                     srcBmp.getHeight(),
                     srcBmp.getHeight()
             );
-
         }else{
-
             dstBmp = Bitmap.createBitmap(
                     srcBmp,
                     0,
@@ -371,15 +369,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        int checkSelfPermission = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_CONTACTS);
-        if (checkSelfPermission == PackageManager.PERMISSION_DENIED) {
-            // 권한 없음
-            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_CONTACTS}, 0);
-        }
-        getContacts();
+//        int checkSelfPermission = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_CONTACTS);
+//        if (checkSelfPermission == PackageManager.PERMISSION_DENIED) {
+//            // 권한 없음
+//            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_CONTACTS}, 0);
+//        }
+//        getContacts();
+        requestPermissions();
     }
-
-
+    
     public static void setPhotoByContactId(Context context, String contactId, Bitmap bmp) {
         Log.e(null, "HELLODDKJDNJ");
         long rawContactId = getRawContactId(context, contactId);

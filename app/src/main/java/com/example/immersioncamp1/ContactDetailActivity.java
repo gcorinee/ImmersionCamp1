@@ -2,6 +2,7 @@ package com.example.immersioncamp1;
 
 import android.Manifest;
 import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
@@ -47,11 +48,14 @@ public class ContactDetailActivity extends AppCompatActivity {
     private CardView callCV, messageCV;
     private BlurImageView backgroundIV;
     private static ImgPathViewModel imgPathViewModel;
+    private Bitmap newPhoto;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_contact_detail);
+        context = this;
 
         modal = getIntent().getParcelableExtra("contact");
         Log.e(null, "modal: " + modal.getUserName() + "  and  " + modal.getContactId());
@@ -151,9 +155,15 @@ public class ContactDetailActivity extends AppCompatActivity {
         if (imgPathViewModel.getImgPath() != null) {
             Log.e(TAG, imgPathViewModel.getImgPath());
             Uri imageUri = getImageUriFromGallery();
-            Bitmap newPhoto = getBitmapFromImageUri(imageUri);
+            newPhoto = getBitmapFromImageUri(imageUri);
             Log.e(null, "thisis: " + contactId);
-            MainActivity.setPhotoByContactId(this, contactId, newPhoto);
+            Thread t = new Thread(new SetPhoto());
+            t.start();
+            try {
+                t.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             Log.e(TAG, "kvcvmvv");
             Log.e(TAG, "z,mzmmzz");
             try { TimeUnit.MILLISECONDS.sleep(100); } catch (Exception e) { return; }
@@ -173,6 +183,7 @@ public class ContactDetailActivity extends AppCompatActivity {
 
         // on below line we are getting data which
         // we passed in our adapter class with intent.
+        Log.e(null, "setView started");
         name = modal.getUserName();
         phoneNumber = modal.getPhoneNumber();
         organization = modal.getOrganization();
@@ -185,6 +196,7 @@ public class ContactDetailActivity extends AppCompatActivity {
         emailTV.setText(email);
         contactIV.setClipToOutline(true);
         Bitmap bitmap = MainActivity.getPhoto(this, modal.getPhotoUri());
+        Log.e(null, "bitmap get");
         contactIV.setImageBitmap(bitmap);
         backgroundIV.setImageBitmap(bitmap);
         backgroundIV.setBlur(2);
@@ -199,4 +211,28 @@ public class ContactDetailActivity extends AppCompatActivity {
         ContactDetailActivity.imgPathViewModel = imgPathViewModel;
     }
 
+    class SetPhoto implements Runnable {
+        public void run() {
+            Log.e(null, "HELLODDKJDNJ");
+            long rawContactId = MainActivity.getRawContactId(context, contactId);
+            Log.e(null, "22HELLODDKJDNJ");
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            Log.e(null, "33HELLODDKJDNJ");
+            newPhoto.compress(Bitmap.CompressFormat.PNG, 1, stream);
+            Log.e(null, "44HELLODDKJDNJ");
+            byte[] byteArray = stream.toByteArray();
+            Uri pictureUri = Uri.withAppendedPath(ContentUris.withAppendedId(ContactsContract.RawContacts.CONTENT_URI,
+                    rawContactId), ContactsContract.RawContacts.DisplayPhoto.CONTENT_DIRECTORY);
+            try {
+                AssetFileDescriptor afd = getContentResolver().openAssetFileDescriptor(pictureUri, "rw");
+                OutputStream os = afd.createOutputStream();
+                os.write(byteArray);
+                os.close();
+                afd.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            Log.e(null, "55glmgl");
+        }
+    }
 }
