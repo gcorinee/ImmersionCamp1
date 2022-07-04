@@ -18,7 +18,7 @@ public class WeatherData {
     public String weather;
     public String temperature;
 
-    public String[] getWeather(String nx,String ny,String baseDate,String baseTime,String type) throws IOException, JSONException {
+    public String[] getWeather(String nx,String ny,String baseDate,String baseTime,String type, int is_daytime) throws IOException, JSONException {
         String apiUrl = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst";
         String serviceKey = "tPEf9APhTp0CNGsynjpqsZdZDybxgESEs1Vhco%2BMgYerZ6ttUNND0hMJ9r1mQFF2FRutmSBWBA%2F3lIUie%2FWC7A%3D%3D";
 
@@ -99,12 +99,13 @@ public class WeatherData {
                     weather = "눈";
                 }
             }
-
             if(category.equals("TMP")){
                 temperature = fcstValue;
             }
         }
-
+        if(is_daytime!=1){
+            weather += "_밤";
+        }
         output[0] = temperature;
         output[1] = weather;
         return output;

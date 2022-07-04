@@ -112,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
         // calling a method to request permissions.
         requestPermissions();
 
-
         widget();
         // widget click event
         ListView listView = findViewById(R.id.weather_widget);
@@ -467,6 +466,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void Callback() {
+        int is_daytime;
         if(latitude==null || longitude==null){
             Toast.makeText(this,"위치 정보 가져오기 실패",Toast.LENGTH_LONG).show();
         }
@@ -477,6 +477,12 @@ public class MainActivity extends AppCompatActivity {
         String date = _date.format(calendar.getTime());
         SimpleDateFormat _time = new SimpleDateFormat("HHmm");
         String time = _time.format(calendar.getTime());
+
+        if (time.compareTo("0600") >= 0 && time.compareTo("1800") < 0) {
+            is_daytime = 1;
+        }else{
+            is_daytime = 0;
+        }
         String base_time = "0200";
 
         // basetime 조정
@@ -506,7 +512,7 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("### Final DATE: " + finalDate);
         System.out.println("### Final TIME: " + finalBase_time);
 
-        fill_data();
+        fill_data(is_daytime);
         System.out.println("###FINAL DATA:" + data);
 
         widgetAdapter adapter = new widgetAdapter(data);
@@ -526,7 +532,7 @@ public class MainActivity extends AppCompatActivity {
         });
         */
 
-    public void fill_data(){ // hold 하나만 쓰는걸로 줄이기
+    public void fill_data(int is_daytime){ // hold 하나만 쓰는걸로 줄이기
 
         WeatherData weatherdata = new WeatherData();
 
@@ -535,19 +541,19 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 System.out.println("###Tread 시작");
                 try {
-                    hold[0] = weatherdata.getWeather(latitude,longitude, finalDate, finalBase_time,"json"); // 현재위치
+                    hold[0] = weatherdata.getWeather(latitude,longitude, finalDate, finalBase_time,"json",is_daytime); // 현재위치
                     data.add(new Weather("현재 위치", hold[0][0]+"℃", hold[0][1]));
-                    hold[1] = weatherdata.getWeather("60","127", finalDate,finalBase_time,"json"); // 서울
+                    hold[1] = weatherdata.getWeather("60","127", finalDate,finalBase_time,"json",is_daytime); // 서울
                     data.add(new Weather("서울", hold[1][0]+"℃", hold[1][1]));
-                    hold[2] = weatherdata.getWeather("98","76", finalDate,finalBase_time,"json"); // 부산
+                    hold[2] = weatherdata.getWeather("98","76", finalDate,finalBase_time,"json",is_daytime); // 부산
                     data.add(new Weather("부산", hold[2][0]+"℃", hold[2][1]));
-                    hold[3] = weatherdata.getWeather("89","90",finalDate,finalBase_time,"json"); // 대구
+                    hold[3] = weatherdata.getWeather("89","90",finalDate,finalBase_time,"json",is_daytime); // 대구
                     data.add(new Weather("대구", hold[3][0]+"℃", hold[3][1]));
-                    hold[4] = weatherdata.getWeather("55","124",finalDate,finalBase_time,"json"); // 인천
+                    hold[4] = weatherdata.getWeather("55","124",finalDate,finalBase_time,"json",is_daytime); // 인천
                     data.add(new Weather("인천", hold[4][0]+"℃", hold[4][1]));
-                    hold[5] = weatherdata.getWeather("58","74",finalDate,finalBase_time,"json"); // 광주
+                    hold[5] = weatherdata.getWeather("58","74",finalDate,finalBase_time,"json",is_daytime); // 광주
                     data.add(new Weather("광주", hold[5][0]+"℃", hold[5][1]));
-                    hold[6] = weatherdata.getWeather("53","38",finalDate,finalBase_time,"json"); // 제주
+                    hold[6] = weatherdata.getWeather("53","38",finalDate,finalBase_time,"json",is_daytime); // 제주
                     data.add(new Weather("제주", hold[6][0]+"℃", hold[6][1]));
                 } catch (IOException e) {
                     System.out.println("IOE에러   " + e);
