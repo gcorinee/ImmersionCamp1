@@ -24,6 +24,10 @@ public class weatherAdapter extends BaseAdapter {
         mWeatherImageMap.put("구름많음", R.drawable.cloudy);
         mWeatherImageMap.put("비", R.drawable.rainy);
         mWeatherImageMap.put("눈", R.drawable.snow);
+        mWeatherImageMap.put("맑음_밤", R.drawable.sunny_night);
+        mWeatherImageMap.put("흐림_밤", R.drawable.fog_night);
+        mWeatherImageMap.put("구름많음_밤", R.drawable.cloudy_night);
+        mWeatherImageMap.put("비_밤", R.drawable.rainy_night);
     }
 
     @Override
