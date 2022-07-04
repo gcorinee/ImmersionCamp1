@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                         // this method is called when all permissions are granted
                         if (multiplePermissionsReport.areAllPermissionsGranted()) {
                             getContacts();
-                            Toast.makeText(MainActivity.this, "All the permissions are granted..", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(MainActivity.this, "All the permissions are granted..", Toast.LENGTH_SHORT).show();
                         }
                         // check for permanent denial of any permission
                         if (multiplePermissionsReport.isAnyPermissionPermanentlyDenied()) {
