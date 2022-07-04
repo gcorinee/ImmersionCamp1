@@ -24,8 +24,6 @@ import com.example.immersioncamp1.utils.PictureFacer;
 import java.util.ArrayList;
 
 /**
- * Author CodeBoy722
- * <p>
  * This Activity get a path to a folder that contains images from the CustomGalleryActivity Intent and displays
  * all the images in the folder inside a RecyclerView
  */

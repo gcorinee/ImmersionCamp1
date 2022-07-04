@@ -36,8 +36,6 @@ import java.util.ArrayList;
 
 
 /**
- * Author: CodeBoy722
- * <p>
  * this fragment handles the browsing of all images in an ArrayList of pictureFacer passed in the constructor
  * the images are loaded in a ViewPager an a RecyclerView is used as a pager indicator for
  * each image in the ViewPager

@@ -15,9 +15,6 @@ import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
 
-/**
- * Author CodeBoy722
- */
 public class RecyclerViewPagerImageIndicator extends RecyclerView.Adapter<IndicatorHolder> {
 
     ArrayList<PictureFacer> pictureList;

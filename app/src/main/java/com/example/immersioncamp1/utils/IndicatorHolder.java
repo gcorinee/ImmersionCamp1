@@ -10,8 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.immersioncamp1.R;
 
 /**
- * Author CodeBoy722
- *
  * recyclerViewPagerImageIndicator's ViewHolder
  */
 public class IndicatorHolder extends RecyclerView.ViewHolder{

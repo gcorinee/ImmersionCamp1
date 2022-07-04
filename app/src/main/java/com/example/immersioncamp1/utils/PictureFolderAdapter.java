@@ -18,8 +18,6 @@ import com.example.immersioncamp1.R;
 import java.util.ArrayList;
 
 /**
- * Author CodeBoy722
- *
  * An adapter for populating RecyclerView with items representing folders that contain images
  */
 public class PictureFolderAdapter extends RecyclerView.Adapter<PictureFolderAdapter.FolderHolder>{
