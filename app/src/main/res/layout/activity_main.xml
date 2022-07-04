@@ -8,16 +8,6 @@
     tools:context=".MainActivity">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/title"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.029" />
-
-    <ProgressBar
-        android:id="@+id/idPBLoading"
         android:layout_height="match_parent">
 
         <TextView
@@ -53,7 +43,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/idRVContacts"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -83,9 +74,7 @@
             android:id="@+id/weather_widget"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:listitem="@layout/item_weather_widget"
-            >
-        </ListView>
+            tools:listitem="@layout/item_weather_widget"></ListView>
     </LinearLayout>
 
 </FrameLayout>
