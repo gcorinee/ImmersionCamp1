@@ -4,7 +4,6 @@ import static androidx.core.view.ViewCompat.setTransitionName;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -18,25 +17,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.immersioncamp1.ContactDetailActivity;
-import com.example.immersioncamp1.ImageDisplayActivity;
-import com.example.immersioncamp1.R;
-import com.example.immersioncamp1.utils.ImageIndicatorListener;
-import com.example.immersioncamp1.utils.ImgPathViewModel;
-import com.example.immersioncamp1.utils.PictureFacer;
-import com.example.immersioncamp1.utils.RecyclerViewPagerImageIndicator;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.immersioncamp1.ContactDetailActivity;
+import com.example.immersioncamp1.R;
+import com.example.immersioncamp1.utils.ImageIndicatorListener;
+import com.example.immersioncamp1.utils.PictureFacer;
+import com.example.immersioncamp1.utils.RecyclerViewPagerImageIndicator;
 
 import java.util.ArrayList;
-import java.util.logging.Logger;
+
+//import com.google.android.gms.fido.fido2.api.common.RequestOptions;
 
 
 /**
@@ -61,8 +57,6 @@ public class PictureBrowserFragment extends Fragment implements ImageIndicatorLi
     private ImagesPagerAdapter pagingImages;
     private int previousSelected = -1;
     private TextView selectImage;
-
-//    private ImgPathViewModel imgPathViewModel;
 
 
     public PictureBrowserFragment() {
@@ -92,33 +86,18 @@ public class PictureBrowserFragment extends Fragment implements ImageIndicatorLi
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ContactDetailActivity.imgPathViewModel.setImgPath(null);
+        ContactDetailActivity.getImgPathViewModel().setImgPath(null);
 
         /**
          * 이미지 경로
          */
-//        imgPathViewModel = new ViewModelProvider(requireActivity()).get(ImgPathViewModel.class);
-
         selectImage = view.findViewById(R.id.idTVSelectImage);
         selectImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                //INTENT OBJ
-//                Intent i = new Intent(getActivity().getBaseContext(),
-//                        ContactDetailActivity.class);
-//
-//                //PACK DATA
-//                i.putExtra("SENDER_KEY", "PictureBrowserFragment");
-//                i.putExtra("PATH_KEY", allImages.get(position).getPicturePath());
-//
-//
-//                //START ACTIVITY
-//                getActivity().startActivity(i);
+                ContactDetailActivity.getImgPathViewModel().setImgPath(allImages.get(position).getPicturePath());
 
-                ContactDetailActivity.imgPathViewModel.setImgPath(allImages.get(position).getPicturePath());
-
-                Log.e(TAG, ContactDetailActivity.imgPathViewModel.getImgPath());
-//                getActivity().getSupportFragmentManager().popBackStack();
+                Log.e(TAG, ContactDetailActivity.getImgPathViewModel().getImgPath());
                 getActivity().onBackPressed();
             }
         });
@@ -318,4 +297,11 @@ public class PictureBrowserFragment extends Fragment implements ImageIndicatorLi
         }, 4000);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        for (int i = 0; i < allImages.size(); i++) {
+            allImages.get(i).setSelected(false);
+        }
+    }
 }

@@ -193,7 +193,7 @@ public class CustomGalleryActivity extends AppCompatActivity implements ItemClic
     protected void onRestart() {
         super.onRestart();
         Log.e(TAG, "onRestart");
-        if (ContactDetailActivity.imgPathViewModel.getImgPath() != null) {
+        if (ContactDetailActivity.getImgPathViewModel().getImgPath() != null) {
             finish();
         }
     }
