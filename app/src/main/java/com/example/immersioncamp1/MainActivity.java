@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
         builder.show();
     }
 
-    private static long getRawContactId(Context context, String contactId) {
+    public static long getRawContactId(Context context, String contactId) {
         String[] projection = new String[]{ContactsContract.RawContacts._ID};
         String selection = ContactsContract.RawContacts.CONTACT_ID + "=?";
         String[] selectionArgs = new String[]{contactId};
@@ -208,6 +208,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static Bitmap getPhoto(Context context, Uri uri) {
+        Log.e(null, "getPhoto started");
         ContentResolver cr = context.getContentResolver();
         try {
             InputStream photo_stream = ContactsContract.Contacts.openContactPhotoInputStream(cr, uri, true);
@@ -223,7 +224,6 @@ public class MainActivity extends AppCompatActivity {
     private static Bitmap cropBitmap(Bitmap srcBmp) {
         Bitmap dstBmp;
         if (srcBmp.getWidth() >= srcBmp.getHeight()){
-
             dstBmp = Bitmap.createBitmap(
                     srcBmp,
                     srcBmp.getWidth()/2 - srcBmp.getHeight()/2,
@@ -231,9 +231,7 @@ public class MainActivity extends AppCompatActivity {
                     srcBmp.getHeight(),
                     srcBmp.getHeight()
             );
-
         }else{
-
             dstBmp = Bitmap.createBitmap(
                     srcBmp,
                     0,
@@ -315,35 +313,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        int checkSelfPermission = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_CONTACTS);
-        if (checkSelfPermission == PackageManager.PERMISSION_DENIED) {
-            // 권한 없음
-            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_CONTACTS}, 0);
-        }
-        getContacts();
+//        int checkSelfPermission = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_CONTACTS);
+//        if (checkSelfPermission == PackageManager.PERMISSION_DENIED) {
+//            // 권한 없음
+//            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_CONTACTS}, 0);
+//        }
+//        getContacts();
+        requestPermissions();
     }
 
-
-    public static void setPhotoByContactId(Context context, String contactId, Bitmap bmp) {
-        Log.e(null, "HELLODDKJDNJ");
-        long rawContactId = getRawContactId(context, contactId);
-        Log.e(null, "22HELLODDKJDNJ");
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        Log.e(null, "33HELLODDKJDNJ");
-        bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        Log.e(null, "44HELLODDKJDNJ");
-        byte[] byteArray = stream.toByteArray();
-        Uri pictureUri = Uri.withAppendedPath(ContentUris.withAppendedId(ContactsContract.RawContacts.CONTENT_URI,
-                rawContactId), ContactsContract.RawContacts.DisplayPhoto.CONTENT_DIRECTORY);
-        try {
-            AssetFileDescriptor afd = context.getContentResolver().openAssetFileDescriptor(pictureUri, "rw");
-            OutputStream os = afd.createOutputStream();
-            os.write(byteArray);
-            os.close();
-            afd.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Log.e(null, "55glmgl");
-    }
 }
