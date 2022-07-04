@@ -112,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
         // calling a method to request permissions.
         requestPermissions();
 
-
         widget();
         // widget click event
         ListView listView = findViewById(R.id.weather_widget);
