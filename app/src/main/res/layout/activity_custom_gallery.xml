@@ -29,7 +29,7 @@
                 android:layout_marginLeft="20dp"
                 android:text="@string/photos_name"
                 android:textColor="@color/white"
-                android:textSize="35sp"
+                android:textSize="@dimen/photos_textsize"
                 android:textStyle="bold" />
 
 

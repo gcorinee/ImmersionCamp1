@@ -158,7 +158,7 @@ public class ImageDisplayActivity extends AppCompatActivity implements ItemClick
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if (ContactDetailActivity.imgPathViewModel.getImgPath() != null) {
+        if (ContactDetailActivity.getImgPathViewModel().getImgPath() != null) {
             finish();
         }
     }

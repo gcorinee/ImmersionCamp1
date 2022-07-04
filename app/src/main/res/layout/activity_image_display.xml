@@ -15,7 +15,7 @@
             android:id="@+id/head"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            app:cardBackgroundColor="@android:color/transparent">
+            app:cardBackgroundColor="@android:color/white">
 
             <TextView
                 android:id="@+id/foldername"
@@ -26,7 +26,7 @@
                 android:layout_marginLeft="10dp"
                 android:text="@string/folderName"
                 android:textColor="@color/black"
-                android:textSize="18sp"
+                android:textSize="@dimen/photos_textsize"
                 android:textStyle="bold" />
 
         </androidx.cardview.widget.CardView>
