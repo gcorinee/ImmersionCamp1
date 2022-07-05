@@ -84,7 +84,7 @@ import java.util.Calendar;
 public class MainActivity extends AppCompatActivity {
 
     ///HHJ
-    String[][] hold = new String[7][3];
+    String[][] hold = new String[7][6];
     public int TO_GRID = 0;
     String latitude, longitude;
     final ArrayList<Weather> data = new ArrayList<>();
@@ -448,10 +448,8 @@ public class MainActivity extends AppCompatActivity {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
                 // 이전에 권한 요청을 거부한 경우 실행
                 Toast.makeText(this, "앱 실행을 위해서는 권한을 설정해야 합니다", Toast.LENGTH_LONG).show();
-                System.out.println("###권한 요청1");
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSIONS_REQUEST);
             } else {
-                System.out.println("###권한 요청2");
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSIONS_REQUEST);
             }
         }
@@ -552,7 +550,7 @@ public class MainActivity extends AppCompatActivity {
         finalDate = date;
         System.out.println("### Final DATE: " + finalDate);
         System.out.println("### Final TIME: " + finalBase_time);
-
+        is_daytime = 0;
         fill_data(is_daytime);
         System.out.println("###FINAL DATA:" + data);
 
@@ -583,19 +581,19 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("###Tread 시작");
                 try {
                     hold[0] = weatherdata.getWeather(latitude,longitude, finalDate, finalBase_time,"json",is_daytime); // 현재위치
-                    data.add(new Weather("현재 위치", hold[0][0]+"℃", hold[0][1],hold[0][2]+"%"));
+                    data.add(new Weather("현재 위치", hold[0][0]+"℃", hold[0][1],hold[0][2]+"%",hold[0][3],hold[0][4],hold[0][5]));
                     hold[1] = weatherdata.getWeather("60","127", finalDate,finalBase_time,"json",is_daytime); // 서울
-                    data.add(new Weather("서울", hold[1][0]+"℃", hold[1][1],hold[1][2]+"%"));
+                    data.add(new Weather("서울", hold[1][0]+"℃", hold[1][1],hold[1][2]+"%",hold[1][3],hold[1][4],hold[1][5]));
                     hold[2] = weatherdata.getWeather("98","76", finalDate,finalBase_time,"json",is_daytime); // 부산
-                    data.add(new Weather("부산", hold[2][0]+"℃", hold[2][1],hold[2][2]+"%"));
+                    data.add(new Weather("부산", hold[2][0]+"℃", hold[2][1],hold[2][2]+"%",hold[2][3],hold[2][4],hold[2][5]));
                     hold[3] = weatherdata.getWeather("89","90",finalDate,finalBase_time,"json",is_daytime); // 대구
-                    data.add(new Weather("대구", hold[3][0]+"℃", hold[3][1],hold[3][2]+"%"));
+                    data.add(new Weather("대구", hold[3][0]+"℃", hold[3][1],hold[3][2]+"%",hold[3][3],hold[3][4],hold[3][5]));
                     hold[4] = weatherdata.getWeather("55","124",finalDate,finalBase_time,"json",is_daytime); // 인천
-                    data.add(new Weather("인천", hold[4][0]+"℃", hold[4][1],hold[4][2]+"%"));
+                    data.add(new Weather("인천", hold[4][0]+"℃", hold[4][1],hold[4][2]+"%",hold[4][3],hold[4][4],hold[4][5]));
                     hold[5] = weatherdata.getWeather("58","74",finalDate,finalBase_time,"json",is_daytime); // 광주
-                    data.add(new Weather("광주", hold[5][0]+"℃", hold[5][1],hold[5][2]+"%"));
+                    data.add(new Weather("광주", hold[5][0]+"℃", hold[5][1],hold[5][2]+"%",hold[5][3],hold[5][4],hold[5][5]));
                     hold[6] = weatherdata.getWeather("53","38",finalDate,finalBase_time,"json",is_daytime); // 제주
-                    data.add(new Weather("제주", hold[6][0]+"℃", hold[6][1],hold[6][2]+"%"));
+                    data.add(new Weather("제주", hold[6][0]+"℃", hold[6][1],hold[6][2]+"%",hold[6][3],hold[6][4],hold[6][5]));
                 } catch (IOException e) {
                     System.out.println("IOE에러   " + e);
                 } catch (JSONException e) {
@@ -608,7 +606,7 @@ public class MainActivity extends AppCompatActivity {
             thread.join();
             System.out.println("###Tread 끝 ");
         }catch (InterruptedException e){
-            System.out.println("###동기화log");
+            System.out.println("###동기화 오류");
         }
     }
 
