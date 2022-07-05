@@ -56,6 +56,7 @@ public class widgetAdapter extends BaseAdapter {
 
             //날씨, 도시, 기온 View
             ImageView weatherimage =(ImageView) convertView.findViewById(R.id.weatherimage);
+            weatherimage.setClipToOutline(true);
             TextView citytext = convertView.findViewById(R.id.citytext);
             TextView temptext = convertView.findViewById(R.id.temptext);
 
