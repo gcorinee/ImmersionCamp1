@@ -12,6 +12,9 @@ import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -30,6 +33,8 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -262,18 +267,49 @@ public class MainActivity extends AppCompatActivity {
         return contactUri;
     }
 
-    public static Bitmap getPhoto(Context context, Uri uri) {
+    public static Bitmap getPhoto(Context context, Uri uri, String name) {
         Log.e(null, "getPhoto started");
         ContentResolver cr = context.getContentResolver();
+        Bitmap bitmap;
         try {
             InputStream photo_stream = ContactsContract.Contacts.openContactPhotoInputStream(cr, uri, true);
-            Bitmap bitmap = BitmapFactory.decodeStream(photo_stream);
+            bitmap = BitmapFactory.decodeStream(photo_stream);
             Log.e(null, "size is:" + uri.toString());
             return cropBitmap(bitmap);
         } catch (Exception e) {
             Log.e(null, "ppp: " + e);
-            return null;
+            ColorGenerator generator = ColorGenerator.MATERIAL;
+            int color = generator.getRandomColor();
+            TextDrawable drawable = TextDrawable.builder().beginConfig()
+                    .width(100)  // width in px
+                    .height(100) // height in px
+                    .endConfig()
+                    // as we are building a circular drawable
+                    // we are calling a build round method.
+                    // in that method we are passing our text and color.
+                    .buildRoundRect(name.substring(0, 2), color, 0);
+            bitmap = drawableToBitmap(drawable);
+            return bitmap;
         }
+    }
+
+    private static Bitmap drawableToBitmap (Drawable drawable) {
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable)drawable).getBitmap();
+        }
+
+
+        int width = drawable.getIntrinsicWidth();
+        width = width > 0 ? width : 96; // Replaced the 1 by a 96
+        int height = drawable.getIntrinsicHeight();
+        height = height > 0 ? height : 96; // Replaced the 1 by a 96
+
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
+        return bitmap;
     }
 
     private static Bitmap cropBitmap(Bitmap srcBmp) {
@@ -347,6 +383,9 @@ public class MainActivity extends AppCompatActivity {
                             //to get the contact names
                             email = emailCursor.getString(emailCursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Email.DATA));
                         }
+
+                        if (email == null || email == "") { email = "정보 없음"; }
+                        if (organization == null || organization == "") { organization = "정보 없음"; }
 
                         photoUri = getPhotoUri(contactId);
 

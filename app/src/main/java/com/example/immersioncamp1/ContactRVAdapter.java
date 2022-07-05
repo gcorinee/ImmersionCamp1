@@ -64,7 +64,7 @@ public class ContactRVAdapter extends RecyclerView.Adapter<ContactRVAdapter.View
         holder.contactTV.setText(modal.getUserName());
         holder.contactDetailTV.setText(modal.getOrganization());
         holder.contactIV.setClipToOutline(true);
-        holder.contactIV.setImageBitmap(MainActivity.getPhoto(context, modal.getPhotoUri()));
+        holder.contactIV.setImageBitmap(MainActivity.getPhoto(context, modal.getPhotoUri(), modal.getUserName()));
         // on below line we are adding on click listener to our item of recycler view.
         holder.itemView.setOnClickListener(v -> {
             // on below line we are opening a new activity and passing data to it.
