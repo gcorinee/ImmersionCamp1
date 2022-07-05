@@ -550,7 +550,7 @@ public class MainActivity extends AppCompatActivity {
         finalDate = date;
         System.out.println("### Final DATE: " + finalDate);
         System.out.println("### Final TIME: " + finalBase_time);
-        is_daytime = 0;
+
         fill_data(is_daytime);
         System.out.println("###FINAL DATA:" + data);
 
