@@ -4,11 +4,13 @@ public class Weather {
     String city;
     String temp;
     String Weather;
+    String humidity;
 
-    public Weather(String city, String temp, String weather) {
+    public Weather(String city, String temp, String weather, String humidity) {
         this.city = city;
         this.temp = temp;
         this.Weather = weather;
+        this.humidity = humidity;
     }
 
     public String getCity() {
@@ -29,6 +31,9 @@ public class Weather {
 
     public String getWeather() {
         return Weather;
+    }
+    public String getHumidity(){
+        return humidity;
     }
 
     public void setWeather(String weather) {

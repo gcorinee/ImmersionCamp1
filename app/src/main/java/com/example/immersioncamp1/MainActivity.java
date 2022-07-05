@@ -84,7 +84,7 @@ import java.util.Calendar;
 public class MainActivity extends AppCompatActivity {
 
     ///HHJ
-    String[][] hold = new String[7][2];
+    String[][] hold = new String[7][3];
     public int TO_GRID = 0;
     String latitude, longitude;
     final ArrayList<Weather> data = new ArrayList<>();
@@ -583,19 +583,19 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("###Tread 시작");
                 try {
                     hold[0] = weatherdata.getWeather(latitude,longitude, finalDate, finalBase_time,"json",is_daytime); // 현재위치
-                    data.add(new Weather("현재 위치", hold[0][0]+"℃", hold[0][1]));
+                    data.add(new Weather("현재 위치", hold[0][0]+"℃", hold[0][1],hold[0][2]+"%"));
                     hold[1] = weatherdata.getWeather("60","127", finalDate,finalBase_time,"json",is_daytime); // 서울
-                    data.add(new Weather("서울", hold[1][0]+"℃", hold[1][1]));
+                    data.add(new Weather("서울", hold[1][0]+"℃", hold[1][1],hold[1][2]+"%"));
                     hold[2] = weatherdata.getWeather("98","76", finalDate,finalBase_time,"json",is_daytime); // 부산
-                    data.add(new Weather("부산", hold[2][0]+"℃", hold[2][1]));
+                    data.add(new Weather("부산", hold[2][0]+"℃", hold[2][1],hold[2][2]+"%"));
                     hold[3] = weatherdata.getWeather("89","90",finalDate,finalBase_time,"json",is_daytime); // 대구
-                    data.add(new Weather("대구", hold[3][0]+"℃", hold[3][1]));
+                    data.add(new Weather("대구", hold[3][0]+"℃", hold[3][1],hold[3][2]+"%"));
                     hold[4] = weatherdata.getWeather("55","124",finalDate,finalBase_time,"json",is_daytime); // 인천
-                    data.add(new Weather("인천", hold[4][0]+"℃", hold[4][1]));
+                    data.add(new Weather("인천", hold[4][0]+"℃", hold[4][1],hold[4][2]+"%"));
                     hold[5] = weatherdata.getWeather("58","74",finalDate,finalBase_time,"json",is_daytime); // 광주
-                    data.add(new Weather("광주", hold[5][0]+"℃", hold[5][1]));
+                    data.add(new Weather("광주", hold[5][0]+"℃", hold[5][1],hold[5][2]+"%"));
                     hold[6] = weatherdata.getWeather("53","38",finalDate,finalBase_time,"json",is_daytime); // 제주
-                    data.add(new Weather("제주", hold[6][0]+"℃", hold[6][1]));
+                    data.add(new Weather("제주", hold[6][0]+"℃", hold[6][1],hold[6][2]+"%"));
                 } catch (IOException e) {
                     System.out.println("IOE에러   " + e);
                 } catch (JSONException e) {
