@@ -34,10 +34,10 @@ public class SubActivity extends AppCompatActivity {
 
                 if(item.is_rain.equals("1")){
                     Toast.makeText(getApplicationContext(),
-                            "온도: " +item.getTemp() + " " + "습도: "+item.getHumidity() + '\n' + " 강수량: " +item.rain_amount,Toast.LENGTH_SHORT).show();
+                            "온도: " +item.getTemp() + " " + "습도: "+item.getHumidity() + '\n' + "강수량: " +item.rain_amount,Toast.LENGTH_SHORT).show();
                 }else{
                     Toast.makeText(getApplicationContext(),
-                            "온도: " +item.getTemp() + " " + "습도: "+item.getHumidity() + '\n' + " 강수확률: " +item.rain_prob +"%" ,Toast.LENGTH_SHORT).show();
+                            "온도: " +item.getTemp() + " " + "습도: "+item.getHumidity() + '\n' + "강수확률: " +item.rain_prob +"%" ,Toast.LENGTH_SHORT).show();
                 }
             }
         });
