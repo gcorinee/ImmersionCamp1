@@ -6,7 +6,7 @@ android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.example.immersioncamp1"
+        applicationId "com.example.mannau"
         minSdk 21
         targetSdk 32
         versionCode 1
