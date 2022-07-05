@@ -280,6 +280,7 @@ public class MainActivity extends AppCompatActivity {
             Log.e(null, "ppp: " + e);
             ColorGenerator generator = ColorGenerator.MATERIAL;
             int color = generator.getRandomColor();
+            String tex = name.length() >= 2 ? name.substring(0, 2) : name.substring(0, 1);
             TextDrawable drawable = TextDrawable.builder().beginConfig()
                     .width(100)  // width in px
                     .height(100) // height in px
@@ -287,7 +288,7 @@ public class MainActivity extends AppCompatActivity {
                     // as we are building a circular drawable
                     // we are calling a build round method.
                     // in that method we are passing our text and color.
-                    .buildRoundRect(name.substring(0, 2), color, 0);
+                    .buildRoundRect(tex, color, 0);
             bitmap = drawableToBitmap(drawable);
             return bitmap;
         }
