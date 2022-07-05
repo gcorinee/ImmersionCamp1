@@ -262,7 +262,7 @@ public class ContactDetailActivity extends AppCompatActivity {
         organizationET.setText(organization);
         emailET.setText(email);
         contactIV.setClipToOutline(true);
-        Bitmap bitmap = MainActivity.getPhoto(this, modal.getPhotoUri());
+        Bitmap bitmap = MainActivity.getPhoto(this, modal.getPhotoUri(), name);
         Log.e(null, "bitmap get");
         contactIV.setImageBitmap(bitmap);
         backgroundIV.setImageBitmap(bitmap);
