@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.immersioncamp1">
+    package="com.example.mannau">
 
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
@@ -29,12 +29,12 @@
         android:theme="@style/Theme.ImmersionCamp1"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".ContactDetailActivity"
+            android:name="com.example.mannau.ContactDetailActivity"
             android:exported="false" />
-        <activity android:name=".CustomGalleryActivity" />
-        <activity android:name=".ImageDisplayActivity" />
+        <activity android:name="com.example.mannau.CustomGalleryActivity" />
+        <activity android:name="com.example.mannau.ImageDisplayActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.mannau.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,7 +43,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".SubActivity" />
+        <activity android:name="com.example.mannau.SubActivity" />
 
     </application>
 

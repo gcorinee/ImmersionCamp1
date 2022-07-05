@@ -35,7 +35,7 @@
 
         </androidx.cardview.widget.CardView>
 
-        <com.example.immersioncamp1.utils.AutoFitRecyclerView
+        <com.example.mannau.utils.AutoFitRecyclerView
             android:id="@+id/folderRecycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -50,7 +50,7 @@
        app:fastScrollVerticalThumbDrawable="@drawable/thumb_drawable"
        app:fastScrollVerticalTrackDrawable="@drawable/line_drawable"-->
 
-        </com.example.immersioncamp1.utils.AutoFitRecyclerView>
+        </com.example.mannau.utils.AutoFitRecyclerView>
 
     </RelativeLayout>
 
