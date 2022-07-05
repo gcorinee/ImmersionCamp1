@@ -1,8 +1,6 @@
 # 만나유 MannaU
 
 
-[github repository](https://github.com/DevinChoi/ImmersionCamp1.git)
-
 ## ****Abstraction****
 
 코로나 때문에 얼굴도 못봤던 친구를 만나러 가자. 만날 지역의 날씨를 알아보자!
