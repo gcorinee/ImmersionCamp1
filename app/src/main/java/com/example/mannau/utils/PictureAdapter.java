@@ -17,8 +17,6 @@ import com.bumptech.glide.request.RequestOptions;
 import java.util.ArrayList;
 
 /**
- * Author CodeBoy722
- *
  * A RecyclerView Adapter class that's populates a RecyclerView with images from
  * a folder on the device external storage
  */

@@ -10,8 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.mannau.R;
 
 /**
- * Author CodeBoy722
- *
  * RecyclerView's item margin decorator
  */
 public class MarginDecoration extends RecyclerView.ItemDecoration {
