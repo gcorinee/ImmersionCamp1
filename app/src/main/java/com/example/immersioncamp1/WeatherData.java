@@ -14,10 +14,13 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 public class WeatherData {
-    String[] output = new String[3];
+    String[] output = new String[6];
     public String weather;
     public String temperature;
     public String humidity;
+    public String is_rain ="0";
+    public String rain_prob = null;
+    public String rain_amount = null;
 
     public String[] getWeather(String nx, String ny, String baseDate, String baseTime, String type, int is_daytime) throws IOException, JSONException {
         String apiUrl = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst";
@@ -97,6 +100,7 @@ public class WeatherData {
             if (category.equals("PTY")) {
                 if (fcstValue.equals("1")) {
                     weather = "비";
+                    is_rain = "1";
                 } else if (fcstValue.equals("3")) {
                     weather = "눈";
                 }
@@ -109,16 +113,29 @@ public class WeatherData {
             if (category.equals("REH")) {
                 humidity = fcstValue;
             }
+            if (category.equals("PCP")){
+                rain_amount = fcstValue;
+            }
+            if (category.equals("POP")) {
+                rain_prob = fcstValue;
+            }
+        }
+
+        if(is_rain.equals("1")) {
+            if (rain_amount.equals("강수없음")) {
+                rain_amount = "0.1mm 미만";
+            }
         }
         if (is_daytime != 1) {
             weather += "_밤";
         }
-        //weather += "℃";
-        //humidity += "%";
+
         output[0] = temperature;
         output[1] = weather;
         output[2] = humidity;
-        System.out.println("###output: "+output);
+        output[3] = is_rain;
+        output[4] = rain_prob;
+        output[5] = rain_amount;
         return output;
     }
 }

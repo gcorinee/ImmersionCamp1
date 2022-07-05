@@ -31,8 +31,14 @@ public class SubActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Weather item = (((MainActivity) MainActivity.mContext).data).get(position);
-                Toast.makeText(getApplicationContext(),
-                        "온도: " +item.getTemp() + " " + "습도: "+item.getHumidity(),Toast.LENGTH_SHORT).show();
+
+                if(item.is_rain.equals("1")){
+                    Toast.makeText(getApplicationContext(),
+                            "온도: " +item.getTemp() + " " + "습도: "+item.getHumidity() + '\n' + " 강수량: " +item.rain_amount,Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getApplicationContext(),
+                            "온도: " +item.getTemp() + " " + "습도: "+item.getHumidity() + '\n' + " 강수확률: " +item.rain_prob +"%" ,Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
