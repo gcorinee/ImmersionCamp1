@@ -12,17 +12,13 @@
         <entry key="app/src/main/res/drawable/ic_org.xml" value="0.1425" />
         <entry key="app/src/main/res/drawable/round_outline.xml" value="0.148" />
         <entry key="app/src/main/res/layout/activity_create_new_contact.xml" value="0.13229166666666667" />
-        <entry key="app/src/main/res/layout/activity_custom_gallery.xml" value="0.12409420289855072" />
-        <entry key="app/src/main/res/layout/activity_image_display.xml" value="0.12409420289855072" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.4026745913818722" />
-        <entry key="app/src/main/res/layout/indicator_holder.xml" value="0.12409420289855072" />
-        <entry key="app/src/main/res/layout/layout_contact_detail.xml" value="0.5952782462057336" />
+        <entry key="app/src/main/res/layout/activity_image_display.xml" value="0.1046875" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/item_weather.xml" value="0.21041666666666667" />
+        <entry key="app/src/main/res/layout/item_weather_widget.xml" value="0.21041666666666667" />
+        <entry key="app/src/main/res/layout/layout_contact_detail.xml" value="0.1085934159897392" />
         <entry key="app/src/main/res/layout/layout_contacts_rv_item.xml" value="0.4559117908441174" />
         <entry key="app/src/main/res/layout/layout_create_new_contact.xml" value="0.13229166666666667" />
-        <entry key="app/src/main/res/layout/pic_holder_item.xml" value="0.1609375" />
-        <entry key="app/src/main/res/layout/picture_browser.xml" value="0.1609375" />
-        <entry key="app/src/main/res/layout/picture_browser_pager.xml" value="0.1609375" />
-        <entry key="app/src/main/res/layout/picture_folder_item.xml" value="0.1609375" />
         <entry key="app/src/main/res/menu/search_menu.xml" value="0.13125" />
       </map>
     </option>

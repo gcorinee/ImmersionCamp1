@@ -12,11 +12,4 @@
         tools:listitem="@layout/item_weather"
         />
 
-    <Button
-        android:id="@+id/btn2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="돌아가기"
-        android:layout_gravity="bottom|center_horizontal"/>
-
 </FrameLayout>
