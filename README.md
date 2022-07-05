@@ -1,6 +1,5 @@
 # 만나유 MannaU
 
----
 
 [github repository](https://github.com/DevinChoi/ImmersionCamp1.git)
 
