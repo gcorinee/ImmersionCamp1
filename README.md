@@ -135,8 +135,6 @@
 
 ## 기여자
 
-[고려대학교 허회준](https://github.com/gcorinee)
-
-[숙명여자대학교 최예빈](https://github.com/DevinChoi)
-
-[카이스트 김우일](https://github.com/woooil)
+- 허회준
+- 최예빈
+- 김우일
